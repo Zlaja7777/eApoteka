@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+    var lijek = (List<Lijek>)ViewData["LijekKey"];
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PrikaziLijekove</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <table class="table table-bordered" style="background-color: #2b731e; color: white; box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+           border-radius: 10px;
+           border: 6px solid #2b731e; text-align: center">
+
+        <tr>
+
+            <th>Naziv lijeka</th>
+            <th>Internacionalni genericki naziv</th>
+            <th>Kvalitativni i kvantitativni sastav</th>
+            <th>Farmaceutski oblik</th>
+            <th>Doziranje i nacin primjene</th>
+            <th>Rok trajanja (izrazen u mjesecima)</th>
+            <th>Naziv proizvodjaca</th>
+            <th>Datum proizvodnje</th>
+            <th>Modifikacija podataka</th>
+        </tr>
+
+        @for (int i = 0; i < lijek.Count; i++)
+        {
+    <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
+        <td>@lijek[i].NazivLijeka</td>
+        <td>@lijek[i].InternacionalniGenerickiNaziv</td>
+        <td>@lijek[i].KvalitativniIKvantitativniSastav</td>
+        <td>@lijek[i].FarmaceutskiOblik</td>
+        <td>@lijek[i].NacinPrimjene</td>
+        <td>@lijek[i].RokTrajanjaMjeseci</td>
+        <td>@lijek[i].NazivProizvodjaca</td>
+        <td>@lijek[i].DatumProizvodnje</td>
+        <td>
+            <a href="/Lijek/Uklanjanje?id=@lijek[i].LijekID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
+                border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Brisi</a>
+            <a href="/Lijek/Uredi?id=@lijek[i].LijekID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
+                border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Uredi</a>
+        </td>
+    </tr>
+        }
+    </table>
+</body>
+</html>

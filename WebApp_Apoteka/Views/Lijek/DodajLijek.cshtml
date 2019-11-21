@@ -1,0 +1,61 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DodajLijek</title>
+    <style>
+        .forma {
+            max-width: 50%;
+            background: #FAFAFA;
+            padding: 30px;
+            margin: 50px auto;
+            box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+            border-radius: 10px;
+            border: 6px solid #2b731e;
+        }
+
+        .forma input {
+                margin-bottom: 20px;
+                width: 100%;
+                padding: 10px;
+                font-family: Calibri;
+                font-size: medium;
+            }
+    </style>
+</head>
+<body>
+    <form action="/Lijek/PohraniLijek" method="post" class="forma">
+        <input type="text" name="NNaziv" placeholder="Naziv lijeka" />
+
+
+        <input type="text" name="NGeneric" placeholder="Internacionalni genericki naziv" />
+
+
+        <input type="text" name="Nkvan" placeholder="Kvalitatvni i kvantitativni sastav" />
+
+
+        <input type="text" name="NFarm" placeholder="Farmaceutski oblik" />
+
+        <input type="text" name="NDozir" placeholder="Doziranje i nacin primjene" />
+
+        <input type="text" name="NRok" placeholder="Rok trajanja (izrazen u mjesecima)" />
+
+        <input type="text" name="NProizv" placeholder="Naziv proizvodjaca" />
+        <br />
+        <br />
+
+        <a style="color:#2b731e; font-family: Calibri; font-size: medium">
+            Datum dodavanja u promet
+        </a>
+        <input type="datetime-local" name="NDp" />
+
+        <input type="submit" value="Dodaj lijek" style="background-color:#2b731e; color: #FAFAFA " />
+    </form>
+</body>
+</html>
