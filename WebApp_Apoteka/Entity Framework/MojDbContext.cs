@@ -34,15 +34,35 @@ namespace WebApp_Apoteka.Entity_Framework
 
             optionsBuilder.UseSqlServer(@" Server= localhost;
 
-                                        Database=WebApoteka;
+                                        Database=IB;
 
-                                        Trusted_Connection=True;
+                                        Trusted_Connection=False;
 
-                                        MultipleActiveResultSets=true;"
+                                        MultipleActiveResultSets=true;
 
-                                       
+                                        User Id = sa;
+                                        Password = reallyStrongPwd123
+
+                                        "
+
                                     );
 
-        }
+        } //za osX
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        //{
+
+        //    optionsBuilder.UseSqlServer(@" Server= DESKTOP-ND9VBEM\MSSQLSERVER_OLAP;
+
+        //                                Database=WebApoteka;
+
+        //                                Trusted_Connection=True;
+
+        //                                MultipleActiveResultSets=true;"
+
+                                       
+        //                            );
+
+        //} 
     }
 }
