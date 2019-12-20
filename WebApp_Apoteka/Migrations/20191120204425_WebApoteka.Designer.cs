@@ -13,7 +13,7 @@ namespace WebApp_Apoteka.Migrations
     [Migration("20191120204425_WebApoteka")]
     partial class WebApoteka
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+         protected  void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

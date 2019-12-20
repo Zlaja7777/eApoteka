@@ -18,7 +18,7 @@ namespace WebApp_Apoteka.Entity_Framework
         public DbSet<Usluga> usluga { get; set; }
         public DbSet<RezervacijaTermina> rezervacijaTermina { get; set; }
         public DbSet<Korisnik> korisnik { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DetaljiOnlineNarudzbe>()
@@ -34,7 +34,7 @@ namespace WebApp_Apoteka.Entity_Framework
 
             optionsBuilder.UseSqlServer(@" Server= localhost;
 
-                                        Database=IB;
+                                        Database=WebApoteka;
 
                                         Trusted_Connection=False;
 
@@ -47,7 +47,8 @@ namespace WebApp_Apoteka.Entity_Framework
 
                                     );
 
-        } //za osX
+        }
+        //zlaja
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         //{
