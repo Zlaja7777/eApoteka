@@ -14,15 +14,4 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20191120204425_WebApoteka.cs" />
-    <Compile Remove="Migrations\MojDbContextModelSnapshot.cs" />
-    <Compile Remove="Migrations\20191121000651_ApotekaV2.cs" />
-    <Compile Remove="Migrations\20191121000651_ApotekaV2.Designer.cs" />
-    <Compile Remove="Migrations\20191220005229_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20191220005229_InitialCreate.cs" />
-    <Compile Remove="Migrations\20191220010128_Prva.cs" />
-    <Compile Remove="Migrations\20191220010128_Prva.Designer.cs" />
-  </ItemGroup>
 </Project>

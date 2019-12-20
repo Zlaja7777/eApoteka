@@ -18,6 +18,24 @@ namespace WebApp_Apoteka.Entity_Framework
         public DbSet<Usluga> usluga { get; set; }
         public DbSet<RezervacijaTermina> rezervacijaTermina { get; set; }
         public DbSet<Korisnik> korisnik { get; set; }
+        public DbSet<Nabavka> nabavka { get; set; }
+        public DbSet<StavkeNabavke> stavkaNabavke { get; set; }
+        public DbSet<Kategorija> kategorija { get; set; }
+        public DbSet<TipKorisnika> tipKorisnika { get; set; }
+        public DbSet<Dobavljac> dobavljac { get; set; }
+        public DbSet<KonkursPraksa> konkursPraksa { get; set; }
+        public DbSet<Kosarica> kosarica{ get; set; }
+        public DbSet<Clanak> clanak{ get; set; }
+
+
+
+
+
+
+
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,23 +44,24 @@ namespace WebApp_Apoteka.Entity_Framework
 
             modelBuilder.Entity<RezervacijaTermina>()
                 .HasKey(r => new { r.KorisnikID, r.UslugaID });
+            modelBuilder.Entity<StavkeNabavke>()
+                .HasKey(s => new { s.NabavkaID, s.LijekID });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         {
 
-            optionsBuilder.UseSqlServer(@" Server= localhost;
+            optionsBuilder.UseSqlServer(@" Server= app.fit.ba,1431;
 
                                         Database=WebApoteka;
 
-                                        Trusted_Connection=False;
+                                        Trusted_Connection=false;
 
                                         MultipleActiveResultSets=true;
 
-                                        User Id = sa;
-                                        Password = reallyStrongPwd123
-
+                                        User=WebApotekaUser;
+                                        Password=Dell12345
                                         "
 
                                     );

@@ -18,9 +18,15 @@ namespace WebApp_Apoteka.Models
 
         public string NacinPrimjene { get; set; }
 
+        public double NabavnaCijena { get; set; }
+        public double ProdajnaCijena { get; set; }
         public int RokTrajanjaMjeseci { get; set; }
 
         public string NazivProizvodjaca { get; set; }
+
+        public string SlikaLijeka { get; set; }
+        public int KategorijaID { get; set; }
+        public Kategorija Kategorija { get; set; }
 
         public DateTime DatumProizvodnje { get; set; }
 
