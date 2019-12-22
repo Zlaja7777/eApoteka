@@ -9,13 +9,18 @@ namespace WebApp_Apoteka.Controllers
 {
     public class LijekController : Controller
     {
+        private MojDbContext db;
+
+        public LijekController(MojDbContext _db)
+        {
+            db = _db;
+        }
         public IActionResult DodajLijek()
         {
             return View();
         }
         public IActionResult PohraniLijek(string NNaziv, string NGeneric, string Nkvan, string NFarm, string NDozir, int NRok, string NProizv, DateTime NDp)
         {
-            MojDbContext db = new MojDbContext();
             Lijek l = new Lijek
             {
                 NazivLijeka = NNaziv,
@@ -35,10 +40,9 @@ namespace WebApp_Apoteka.Controllers
         }
         public IActionResult Uredi(int id)
         {
-            MojDbContext db = new MojDbContext();
             List<Lijek> lijek = db.Lijek.ToList();
             for (int i = 0; i < lijek.Count; i++)
-                if(lijek[i].LijekID == id)
+                if (lijek[i].LijekID == id)
                 {
                     TempData["kljucLijeka"] = i;
                     break;
@@ -48,7 +52,6 @@ namespace WebApp_Apoteka.Controllers
         }
         public IActionResult UredjivanjeLijeka(int id, string NNaziv, string NGeneric, string Nkvan, string NFarm, string NDozir, int NRok, string NProizv, DateTime NDp)
         {
-            MojDbContext db = new MojDbContext();
             Lijek lijek = db.Lijek.Find(id);
             lijek.NazivLijeka = NNaziv;
             lijek.InternacionalniGenerickiNaziv = NGeneric;
@@ -67,7 +70,6 @@ namespace WebApp_Apoteka.Controllers
         }
         public IActionResult PrikaziLijekove()
         {
-            MojDbContext db = new MojDbContext();
             List<Lijek> lijek = db.Lijek.ToList();
             ViewData["LijekKey"] = lijek;
             db.Dispose();
@@ -76,7 +78,6 @@ namespace WebApp_Apoteka.Controllers
         }
         public IActionResult Uklanjanje(int id)
         {
-            MojDbContext db = new MojDbContext();
             Lijek lijek = db.Lijek.Find(id);
             TempData["keyUkloni"] = lijek.NazivLijeka;
             db.Lijek.Remove(lijek);

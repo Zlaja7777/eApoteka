@@ -10,6 +10,14 @@ namespace WebApp_Apoteka.Entity_Framework
 {
     public class MojDbContext : DbContext
     {
+        public MojDbContext(DbContextOptions opcije) : base(opcije)
+        {
+
+        }
+        public MojDbContext()
+        {
+
+        }
         public DbSet<Lijek> Lijek { get; set; }
         public DbSet<Apotekar> Apotekar { get; set; }
         public DbSet<Opstina> Opstina { get; set; }
@@ -48,7 +56,7 @@ namespace WebApp_Apoteka.Entity_Framework
                 .HasKey(s => new { s.NabavkaID, s.LijekID });
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         {
 
@@ -66,7 +74,7 @@ namespace WebApp_Apoteka.Entity_Framework
 
                                     );
 
-        }
+        }*/
         //zlaja
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 

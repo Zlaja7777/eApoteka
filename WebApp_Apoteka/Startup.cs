@@ -2,12 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApoteka_Services;
+using WebApp_Apoteka.Entity_Framework;
 
 namespace WebApp_Apoteka
 {
@@ -24,6 +28,9 @@ namespace WebApp_Apoteka
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IApotekarServices, ApotekarServices>();
+            services.AddDbContext<MojDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
