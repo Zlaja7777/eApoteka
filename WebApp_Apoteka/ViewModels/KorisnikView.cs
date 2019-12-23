@@ -1,11 +1,11 @@
-﻿using Apoteka.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-namespace WebApp_Apoteka.Models
+
+namespace WebApp_Apoteka.ViewModels
 {
-    public class Korisnik
+    public class KorisnikView
     {
         public int ID { get; set; }
 
@@ -15,19 +15,12 @@ namespace WebApp_Apoteka.Models
 
         public DateTime DatumRodjenja { get; set; }
 
-        public int OpstinaRodjenjaID { get; set; }
-        public Opstina OpstinaRodjenja { get; set; }
+        public string OpstinaRodjenja { get; set; }
 
         public string Adresa { get; set; }
-        public int TipKorisnikaID { get; set; }
-        public TipKorisnika TipKorisnika { get; set; }
+        public string TipKorisnika { get; set; }
 
         public string Email { get; set; }
-
-        public string Password { get; set; }
-
         public int Bonovi { get; set; }
-
-
     }
 }

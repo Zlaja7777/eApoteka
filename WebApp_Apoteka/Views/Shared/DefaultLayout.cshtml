@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "DefaultLayout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #header {
+            background-color: grey;
+            height: 200px;
+            width: 100%;
+        }
+
+        #Navigation-bar {
+            position: relative;
+            top: 120px;
+            margin: 0;
+            padding:0;
+            text-align: center;
+        }
+
+        li {
+            display: inline-block;
+            margin-left: 40px;
+        }
+
+        #Navigation-bar a {
+            font-size: 30px;
+        }
+
+        #Reg-Login {
+            margin-left: 70%;
+        }
+        #Reg-Login a{
+            display:inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+
+
+        <ul id="Navigation-bar">
+            <li><a>Home</a></li>
+            <li><a>Usluge</a></li>
+            <li><a>Online apoteka</a></li>
+            <li><a>O nama</a> </li>
+
+        </ul>
+        <div id="Reg-Login">
+            <a class="nav-link text-dark">Login</a>
+            <a href="/Registracija/DodajKorisnika" class="nav-link text-dark">Registracija</a>
+        </div>
+    </div>
+
+    <div id="Container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>

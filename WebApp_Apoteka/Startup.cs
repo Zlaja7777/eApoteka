@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApoteka_Services;
 using WebApp_Apoteka.Entity_Framework;
+using WebApp_Apoteka.WebApoteka_Interfaces;
+using WebApp_Apoteka.WebApoteka_Services;
 
 namespace WebApp_Apoteka
 {
@@ -29,6 +31,8 @@ namespace WebApp_Apoteka
         {
             services.AddControllersWithViews();
             services.AddScoped<IApotekarServices, ApotekarServices>();
+            services.AddScoped<IKorisnikServices, KorisnikServices>();
+  
             services.AddDbContext<MojDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
         }
