@@ -72,7 +72,7 @@ namespace Apoteka.Controllers
             a.Prezime = aA.Prezime;
             a.JMBG = aA.JMBG;
             a.DatumRodjenja = aA.DatumRodjenja;
-            a.MjestoRodjenjaID = aA.MjestoRodjenjaID; //potrebno je unijeti opstine u bazu, ideja je jasna!
+            a.MjestoRodjenjaID = aA.MjestoRodjenjaID; 
             a.DatumZaposlenja = aA.DatumZaposlenja;
             if (aA.ID != 0)
             {

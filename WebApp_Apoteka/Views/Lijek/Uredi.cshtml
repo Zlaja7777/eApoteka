@@ -1,9 +1,8 @@
 ﻿@using WebApp_Apoteka.Entity_Framework;
 @{
     Layout = null;
-    MojDbContext db = new MojDbContext();
-    List<Lijek> lijek = db.Lijek.ToList();
-    int index = (int)@TempData["kljucLijeka"];
+    
+    var lijek = (Lijek)@TempData["kljucLijeka"];
 }
 
 <!DOCTYPE html>
@@ -33,24 +32,24 @@
     </style>
 </head>
 <body>
-    <form action="/Lijek/UredjivanjeLijeka?id=@lijek[index].LijekID" method="post" class="forma">
+    <form action="/Lijek/UredjivanjeLijeka?id=@lijek.LijekID" method="post" class="forma">
 
-        <input type="text" name="NNaziv" value="@lijek[index].NazivLijeka" />
-
-
-        <input type="text" name="NGeneric"  value="@lijek[index].InternacionalniGenerickiNaziv" />
+        <input type="text" name="NNaziv" value="@lijek.NazivLijeka" />
 
 
-        <input type="text" name="Nkvan"  value="@lijek[index].KvalitativniIKvantitativniSastav" />
+        <input type="text" name="NGeneric"  value="@lijek.InternacionalniGenerickiNaziv" />
 
 
-        <input type="text" name="NFarm"  value="@lijek[index].FarmaceutskiOblik" />
+        <input type="text" name="Nkvan"  value="@lijek.KvalitativniIKvantitativniSastav" />
 
-        <input type="text" name="NDozir"  value="@lijek[index].NacinPrimjene" />
 
-        <input type="text" name="NRok" value="@lijek[index].RokTrajanjaMjeseci" />
+        <input type="text" name="NFarm"  value="@lijek.FarmaceutskiOblik" />
 
-        <input type="text" name="NProizv"  value="@lijek[index].NazivProizvodjaca" />
+        <input type="text" name="NDozir"  value="@lijek.NacinPrimjene" />
+
+        <input type="text" name="NRok" value="@lijek.RokTrajanjaMjeseci" />
+
+        <input type="text" name="NProizv"  value="@lijek.NazivProizvodjaca" />
         <br />
         <br />
 

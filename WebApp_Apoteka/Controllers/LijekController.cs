@@ -30,7 +30,8 @@ namespace WebApp_Apoteka.Controllers
                 NacinPrimjene = NDozir,
                 RokTrajanjaMjeseci = NRok,
                 NazivProizvodjaca = NProizv,
-                DatumProizvodnje = NDp
+                DatumProizvodnje = NDp,
+                KategorijaID = 1
 
             };
             db.Lijek.Add(l);
@@ -44,7 +45,7 @@ namespace WebApp_Apoteka.Controllers
             for (int i = 0; i < lijek.Count; i++)
                 if (lijek[i].LijekID == id)
                 {
-                    TempData["kljucLijeka"] = i;
+                    TempData["kljucLijeka"] = lijek[i];
                     break;
                 }
             db.Dispose();

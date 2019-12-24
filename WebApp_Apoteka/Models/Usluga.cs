@@ -8,7 +8,7 @@ namespace WebApp_Apoteka.Models
     public class Usluga
     {
         public int ID { get; set; }
-        public int Naziv { get; set; }
+        public string Naziv { get; set; }
         public DateTime DatumVrijeme { get; set; }
         public string Napomena { get; set; }
         public int BrojPacijenata { get; set; }

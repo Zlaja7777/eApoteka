@@ -69,6 +69,7 @@ namespace WebApp_Apoteka.Entity_Framework
                                         MultipleActiveResultSets=true;
 
                                         User=WebApotekaUser;
+
                                         Password=Dell12345
                                         "
 
