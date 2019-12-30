@@ -90,7 +90,11 @@
 
 
             <input asp-for="FarmaceutskiOblik" value=@Model.FarmaceutskiOblik />
-            <select asp-for="KategorijeID" asp-items="Model.ListaKategorija">
+            <select asp-for="KategorijeID" asp-items="Model.ListaKategorija" style="margin-bottom: 20px;
+                width: 100%;
+                padding: 10px;
+                font-family: Calibri;
+                font-size: medium">
                    <option>Odaberite kategoriju</option>
             </select>
             <input asp-for="NacinPrimjene" value=@Model.NacinPrimjene />
