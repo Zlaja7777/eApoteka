@@ -82,6 +82,9 @@ namespace WebApp_Apoteka.Controllers
             db.Dispose();
             return View();
         }
-
+        public IActionResult UslugaHome()
+        {
+            return View();
+        }
     }
 }

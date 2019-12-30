@@ -17,9 +17,17 @@
   <ItemGroup>
     <Compile Remove="Controllers\KategorijaController.cs" />
     <Compile Remove="Controllers\KorisnikController.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Usluga\" />
+    <Folder Include="Views\RezervacijaTermina\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Usluga\EmptyHtmlFile.cshtml" />
