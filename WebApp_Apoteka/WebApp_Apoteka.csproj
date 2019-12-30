@@ -32,5 +32,11 @@
   <ItemGroup>
     <Content Remove="Views\Usluga\EmptyHtmlFile.cshtml" />
     <Content Remove="Views\Lijek\Uredi.cshtml" />
+    <Content Remove="Views\Usluga\PrikazUsluga.cshtml" />
+    <Content Remove="Views\Usluga\PohranaUredjeneUsluge.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove=".DS_Store" />
+    <None Remove="Views\.DS_Store" />
   </ItemGroup>
 </Project>
