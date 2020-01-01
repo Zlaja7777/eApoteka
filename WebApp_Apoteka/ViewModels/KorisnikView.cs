@@ -18,6 +18,7 @@ namespace WebApp_Apoteka.ViewModels
         public string OpstinaRodjenja { get; set; }
 
         public string Adresa { get; set; }
+        public string Telefon { get; set; }
         public string TipKorisnika { get; set; }
 
         public string Email { get; set; }

@@ -13,6 +13,7 @@ namespace WebApp_Apoteka.WebApoteka_Interfaces
         void Add(Korisnik k);
         List<Opstina> GetAllOpstine();
 
+        void Obrisi(Korisnik k);
         List<TipKorisnika> GetAllTipKorisnika();
     }
 }

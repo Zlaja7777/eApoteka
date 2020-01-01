@@ -1,6 +1,7 @@
 ﻿using Apoteka.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 namespace WebApp_Apoteka.Models
@@ -17,13 +18,13 @@ namespace WebApp_Apoteka.Models
 
         public int OpstinaRodjenjaID { get; set; }
         public Opstina OpstinaRodjenja { get; set; }
-
+        
         public string Adresa { get; set; }
+        public string Telefon { get; set; }
         public int TipKorisnikaID { get; set; }
         public TipKorisnika TipKorisnika { get; set; }
-
+        
         public string Email { get; set; }
-
         public string Password { get; set; }
 
         public int Bonovi { get; set; }

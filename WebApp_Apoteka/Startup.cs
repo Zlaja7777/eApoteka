@@ -30,9 +30,10 @@ namespace WebApp_Apoteka
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IDobavljacServices, DobavljacServices>();
             services.AddScoped<IApotekarServices, ApotekarServices>();
             services.AddScoped<IKorisnikServices, KorisnikServices>();
-  
+
             services.AddDbContext<MojDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
 
         }

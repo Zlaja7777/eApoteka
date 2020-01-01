@@ -18,10 +18,11 @@ namespace WebApp_Apoteka.ViewModels
 
         public int OpstinaRodjenjaID { get; set; }
         public string Adresa { get; set; }
+        public string Telefon { get; set; }
 
         public int TipKorisnikaID { get; set; }
         public string Email { get; set; }
-
+        public string PorukaEmailPostoji { get; set; }
         public string Password { get; set; }
         public List<SelectListItem> Opstine { get; set; }
         public List<SelectListItem> TipoviKorisnika { get; set; }

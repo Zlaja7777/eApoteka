@@ -10,24 +10,26 @@ using WebApp_Apoteka.WebApoteka_Interfaces;
 
 namespace WebApp_Apoteka.WebApoteka_Services
 {
-    public class KorisnikServices : IKorisnikServices
+    public class DobavljacServices : IDobavljacServices
     {
         MojDbContext _db;
-
-        public KorisnikServices(MojDbContext db)
+        public DobavljacServices(MojDbContext db)
         {
             _db = db;
         }
-
-        public void Add(Korisnik k)
+        public void Add(Dobavljac d)
         {
-            _db.Add(k);
+            _db.Add(d);
             _db.SaveChanges();
         }
 
-        public List<Korisnik> GetAll()
+        public Dobavljac GetDobavljac()
         {
-            return _db.korisnik.Include(k => k.OpstinaRodjenja).Include(k => k.TipKorisnika).ToList();
+            return _db.dobavljac.FirstOrDefault();
+        }
+        public List<Dobavljac> GetAll()
+        {
+            return _db.dobavljac.Include(d => d.Grad).ToList();
         }
 
         public List<Opstina> GetAllOpstine()
@@ -35,14 +37,8 @@ namespace WebApp_Apoteka.WebApoteka_Services
             return _db.Opstina.ToList();
         }
 
-        public List<TipKorisnika> GetAllTipKorisnika()
+        public void SaveChanges()
         {
-            return _db.tipKorisnika.ToList();
-        }
-
-        public void Obrisi(Korisnik k)
-        {
-            _db.Remove(k);
             _db.SaveChanges();
         }
     }
