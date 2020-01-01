@@ -24,10 +24,12 @@
     <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
     <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
     <Compile Remove="Controllers\ApotekarController %28copy%29.cs" />
+    <Compile Remove="Controllers\AddOnlineNarudzba.cs" />
+    <Compile Remove="Controllers\RezervacijaTerminaController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Usluga\" />
-    <Folder Include="Views\RezervacijaTermina\" />
+    <Folder Include="Views\Narudzba\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Usluga\EmptyHtmlFile.cshtml" />
@@ -38,5 +40,6 @@
   <ItemGroup>
     <None Remove=".DS_Store" />
     <None Remove="Views\.DS_Store" />
+    <None Remove="Views\Kosarica\Dldam.css" />
   </ItemGroup>
 </Project>

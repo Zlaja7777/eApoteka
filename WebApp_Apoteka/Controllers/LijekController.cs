@@ -108,7 +108,15 @@ namespace WebApp_Apoteka.Controllers
                     ProdajnaCijena = m.ProdajnaCijena,
                 }).ToList()
             };
+          
 
+            List<KosaricaView> kosarica = db.kosarica.Select(s => new KosaricaView
+            {
+                KosaricaID = s.KosaricaID,
+     
+            }).ToList();
+
+            ViewData["kosaricaKey"] = kosarica;
             return View(model);
         }
         public IActionResult Uklanjanje(int id)

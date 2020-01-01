@@ -1,10 +1,12 @@
-﻿
+﻿@using WebApp_Apoteka.ViewModels;
 
 <!DOCTYPE html>
 @{
     Layout = null;
 
 }
+@model AddUslugaViewM
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,22 +32,47 @@
     </style>
 </head>
 <body>
-    <form action="/Usluga/PohraniUslugu" method="post" class="forma">
-        <input type="text" name="NNaziv" placeholder="Naziv usluge" />
+    
+    <form asp-action="PohraniUslugu" method="post" class="forma">
+     @if (Model.ID == 0)
+     {
+         <input asp-for="ID" hidden/>
+        <input asp-for="Naziv" placeholder="Naziv usluge" />
 
         <a style="color:#2b731e; font-family: Calibri; font-size: medium">
             Datum izvrsavanja usluge
         </a>
-        <input type="datetime-local" name="NDatumVrijeme" />
+        <input type="datetime" asp-for="DatumVrijeme" />
 
-        <input type="text" name="NNapomena" placeholder="Napomena" />
+        <input asp-for="Napomena" placeholder="Napomena" />
 
 
-        <input type="text" name="NBrojPacijenata" placeholder="Broj pacijenata" />
+        <input asp-for="BrojPacijenata" placeholder="Broj pacijenata" />
 
         <br />
         <br />
         <input type="submit" value="Dodaj uslugu" style="background-color:#2b731e; color: #FAFAFA " />
+     }
+     else
+     {
+         <input asp-for="ID" hidden/>
+        <input asp-for="Naziv" value=@Model.Naziv />
+
+        <a style="color:#2b731e; font-family: Calibri; font-size: medium">
+            Datum izvrsavanja usluge
+        </a>
+        <input type="datetime" asp-for="DatumVrijeme" />
+
+        <input asp-for="Napomena" value=@Model.Napomena />
+
+
+        <input asp-for="BrojPacijenata" value=@Model.BrojPacijenata />
+
+        <br />
+        <br />
+        <input type="submit" value="Uredi uslugu" style="background-color:#2b731e; color: #FAFAFA " />
+     }
+
     </form>
 
 </body>
