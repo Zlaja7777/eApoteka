@@ -1,7 +1,10 @@
 ﻿
 @{
     Layout = null;
+
 }
+@using WebApp_Apoteka.ViewModels;
+@model AddLijekViewM
 
 <!DOCTYPE html>
 
@@ -20,42 +23,96 @@
             border: 6px solid #2b731e;
         }
 
-        .forma input {
+        .forma input{
                 margin-bottom: 20px;
                 width: 100%;
                 padding: 10px;
                 font-family: Calibri;
                 font-size: medium;
             }
+        #k{
+            margin-bottom: 20px;
+                width: 100%;
+                padding: 10px;
+                font-family: Calibri;
+                font-size: medium;
+        }
     </style>
 </head>
 <body>
-    <form action="/Lijek/PohraniLijek" method="post" class="forma">
-        <input type="text" name="NNaziv" placeholder="Naziv lijeka" />
+    <form asp-action="PohraniLijek" method="post" class="forma">
+       @if (Model.LijekID == 0)
+       {
+            <input asp-for="LijekID" hidden />
+            <input asp-for="NazivLijeka" placeholder="Naziv lijeka" />
+            
+
+            <input asp-for="InternacionalniGenerickiNaziv" placeholder="Internacionalni genericki naziv" />
 
 
-        <input type="text" name="NGeneric" placeholder="Internacionalni genericki naziv" />
+            <input asp-for="KvalitativniIKvantitativniSastav"  placeholder="Kvalitatvni i kvantitativni sastav" />
 
 
-        <input type="text" name="Nkvan" placeholder="Kvalitatvni i kvantitativni sastav" />
+            <input asp-for="FarmaceutskiOblik" placeholder="Farmaceutski oblik" />
+            <select asp-for="KategorijeID" asp-items="Model.ListaKategorija" style="margin-bottom: 20px;
+                width: 100%;
+                padding: 10px;
+                font-family: Calibri;
+                font-size: medium">
+                   <option>Odaberite kategoriju</option>
+            </select>
+            <input asp-for="NacinPrimjene" placeholder="Doziranje i nacin primjene" />
+            <input asp-for="NabavnaCijena" placeholder="Nabavna cijena" />
+            <input asp-for="ProdajnaCijena" placeholder="Prodajna cijena"/>
+            <input asp-for="RokTrajanjaMjeseci" placeholder="Rok trajanja (izrazen u mjesecima)" />
+
+            <input asp-for="NazivProizvodjaca" placeholder="Naziv proizvodjaca" />
+
+        
+
+            <a style="color:#2b731e; font-family: Calibri; font-size: medium">
+                Datum dodavanja u promet
+            </a>
+          <input type="date" asp-for="DatumProizvodnje"  />
+
+            <input type="submit" value="Dodaj lijek" style="background-color:#2b731e; color: #FAFAFA " />
+       }
+       else
+       {
+            <input asp-for="LijekID" hidden />
+            <input asp-for="NazivLijeka" value=@Model.NazivLijeka />
+            
+
+            <input asp-for="InternacionalniGenerickiNaziv" value=@Model.InternacionalniGenerickiNaziv />
 
 
-        <input type="text" name="NFarm" placeholder="Farmaceutski oblik" />
+            <input asp-for="KvalitativniIKvantitativniSastav"  value=@Model.KvalitativniIKvantitativniSastav />
 
-        <input type="text" name="NDozir" placeholder="Doziranje i nacin primjene" />
 
-        <input type="text" name="NRok" placeholder="Rok trajanja (izrazen u mjesecima)" />
+            <input asp-for="FarmaceutskiOblik" value=@Model.FarmaceutskiOblik />
+            <select asp-for="KategorijeID" asp-items="Model.ListaKategorija" style="margin-bottom: 20px;
+                width: 100%;
+                padding: 10px;
+                font-family: Calibri;
+                font-size: medium">
+                   <option>Odaberite kategoriju</option>
+            </select>
+            <input asp-for="NacinPrimjene" value=@Model.NacinPrimjene />
+            <input asp-for="NabavnaCijena" value=@Model.NabavnaCijena />
+            <input asp-for="ProdajnaCijena" value=@Model.ProdajnaCijena/>
+            <input asp-for="RokTrajanjaMjeseci" value=@Model.RokTrajanjaMjeseci />
 
-        <input type="text" name="NProizv" placeholder="Naziv proizvodjacaaa" />
-        <br />
-        <br />
+            <input asp-for="NazivProizvodjaca" value=@Model.NazivProizvodjaca />
 
-        <a style="color:#2b731e; font-family: Calibri; font-size: medium">
-            Datum dodavanja u promet
-        </a>
-        <input type="datetime-local" name="NDp" />
+        
 
-        <input type="submit" value="Dodaj lijek" style="background-color:#2b731e; color: #FAFAFA " />
+            <a style="color:#2b731e; font-family: Calibri; font-size: medium">
+                Datum izmjene
+            </a>
+            <input type="date" asp-for="DatumProizvodnje" value="@Model.DatumProizvodnje" />
+
+            <input type="submit" value="Spremi izmjene" style="background-color:#2b731e; color: #FAFAFA " />
+       }
     </form>
 </body>
 </html>

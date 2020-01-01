@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace WebApp_Apoteka.Models
+namespace WebApp_Apoteka.ViewModels
 {
-    public class Lijek
+    public class AddLijekViewM
     {
         public int LijekID { get; set; }
+
+        [Required(ErrorMessage = "Naziv lijeka nije unesen!")]
         public string NazivLijeka { get; set; }
 
         public string InternacionalniGenerickiNaziv { get; set; }
@@ -25,11 +29,9 @@ namespace WebApp_Apoteka.Models
         public string NazivProizvodjaca { get; set; }
 
         public string SlikaLijeka { get; set; }
-        public int KategorijaID { get; set; }
-        public Kategorija Kategorija { get; set; }
 
+        public int KategorijeID { get; set; }
+        public List<SelectListItem> ListaKategorija { get; set; }
         public DateTime DatumProizvodnje { get; set; }
-
-
     }
 }
