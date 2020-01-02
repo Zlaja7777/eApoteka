@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp_Apoteka.Models;
 using Apoteka.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebApp_Apoteka.Entity_Framework
 {
-    public class MojDbContext : DbContext
+    public class MojDbContext : IdentityDbContext<AppUser>
     {
         public MojDbContext(DbContextOptions opcije) : base(opcije)
         {
@@ -47,6 +48,7 @@ namespace WebApp_Apoteka.Entity_Framework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<DetaljiOnlineNarudzbe>()
                 .HasKey(d => new { d.lijekID, d.onlineNarudzbaID });
 

@@ -1,0 +1,38 @@
+﻿@model List<KorisnikUlogaVM>
+@{
+    ViewData["Title"] = "AddRemoveKorisnikaUlogu";
+}
+
+@{
+    Layout = "DefaultLayout";
+    var ulogaID = ViewBag.UlogaID;
+    var NazivUloge = ViewBag.NazivUloge;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>Dodaj ili ukloni korisnika iz uloge @NazivUloge</h2>
+    </div>
+    <div class="card-body">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            //<form asp-action="Ukloni" asp-route="@NazivUloge">
+            <label asp-for="@Model[i].UserID" display></label>
+            <label>@Model[i].UserName</label>
+            <input type="submit" class="btn btn-danger" value="Ukloni" />
+            //</form>
+        }
+        @if (Model.Count == 0)
+        {
+            <h5 class="card-title">Nema korisnika</h5>
+        }
+    </div>
+    <div class="card-footer">
+        @if (NazivUloge == "Korisnik")
+        {
+            <a class="btn btn-primary" asp-controller="Account" asp-action="Registracija">Dodaj korisnika</a>
+        }
+        <a asp-action="UrediUlogu" asp-route-id="@ulogaID" class="btn btn-primary">Nazad </a>
+    </div>
+</div>
+

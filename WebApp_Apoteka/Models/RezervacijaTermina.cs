@@ -10,8 +10,9 @@ namespace WebApp_Apoteka.Models
         public int UslugaID { get; set; }
         public Usluga usluga { get; set; }
 
-        public int KorisnikID { get; set; }
-        public Korisnik korisnik { get; set; }
+        public string KorisnikID { get; set; }
+        public AppUser korisnik { get; set; }
+        //public Korisnik korisnik { get; set; }
         public DateTime DatumVrijemeRezervacije { get; set; }
 
 

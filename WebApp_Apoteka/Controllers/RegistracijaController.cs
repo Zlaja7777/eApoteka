@@ -32,11 +32,11 @@ namespace WebApp_Apoteka.Controllers
         }
         public IActionResult SnimiKorisnika(AddKorisnikVM kVM)
         {
-            if(_IKorisnik.GetAll().Any(a=>a.Email==kVM.Email))
-            {
-                kVM.PorukaEmailPostoji = "Email je vec iskoristen";
-                return View("DodajKorisnika", kVM);
-            }
+            //if(_IKorisnik.GetAll().Any(a=>a.Email==kVM.Email))
+            //{
+            //    kVM.PorukaEmailPostoji = "Email je vec iskoristen";
+            //    return View("DodajKorisnika", kVM);
+            //}
             Korisnik k = new Korisnik()
             {
                 Ime = kVM.Ime,
@@ -46,8 +46,8 @@ namespace WebApp_Apoteka.Controllers
                 Adresa = kVM.Adresa,
                 Telefon=kVM.Telefon,
                 TipKorisnikaID = kVM.TipKorisnikaID,
-                Email = kVM.Email,
-                Password=kVM.Password,
+                //Email = kVM.Email,
+                //Password=kVM.Password,
                 Bonovi=0
             };
             _IKorisnik.Add(k);
@@ -65,7 +65,7 @@ namespace WebApp_Apoteka.Controllers
                 Adresa=s.Adresa,
                 Telefon=s.Telefon,
                 TipKorisnika=s.TipKorisnika.Naziv,
-                Email=s.Email,
+                //Email=s.Email,
                 Bonovi=s.Bonovi
             }).ToList();
             return View(model);

@@ -23,9 +23,6 @@ namespace WebApp_Apoteka.Models
         public string Telefon { get; set; }
         public int TipKorisnikaID { get; set; }
         public TipKorisnika TipKorisnika { get; set; }
-        
-        public string Email { get; set; }
-        public string Password { get; set; }
 
         public int Bonovi { get; set; }
 

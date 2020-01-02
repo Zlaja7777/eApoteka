@@ -9,8 +9,9 @@ namespace WebApp_Apoteka.Models
     public class OnlineNarudzba
     {
         public int ID { get; set; }
-        public int korisnikID { get; set; }
-        public Korisnik korisnik { get; set; }
+        public string korisnikID { get; set; }
+        public AppUser korisnik { get; set; }
+        //public Korisnik korisnik { get; set; }
 
         public DateTime datum { get; set; }
         public double vrijednostNarudzbe { get; set; }

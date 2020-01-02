@@ -107,7 +107,7 @@ namespace WebApp_Apoteka.Controllers
             //onemoguciti da broj rezervacija predje broj pacijenata!!
             RezervacijaTermina rz = new RezervacijaTermina();
             rz.UslugaID = uslugaID;
-            rz.KorisnikID = 1; // trebat ce getat logiranog, ovo je default vrijednost
+            //rz.KorisnikID = 1; // trebat ce getat logiranog, ovo je default vrijednost
             rz.DatumVrijemeRezervacije = DateTime.Now;
             db.rezervacijaTermina.Add(rz);
 
@@ -122,10 +122,10 @@ namespace WebApp_Apoteka.Controllers
                 podaci = db.rezervacijaTermina.Select(rz => new RezervacijaTerminaView.Podaci
                 {
                     NazivUsluge = rz.usluga.Naziv,
-                    ImePrezime = rz.korisnik.Ime + " " +rz.korisnik.Prezime,
+                    //ImePrezime = rz.korisnik.Ime + " " +rz.korisnik.Prezime,
                     DatumRezervacije = rz.DatumVrijemeRezervacije,
                     UslugaID = rz.usluga.ID,
-                    KorisnikID = rz.KorisnikID
+                    //KorisnikID = rz.KorisnikID
 
                 }).ToList()
             };

@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApoteka_Services;
 using WebApp_Apoteka.Entity_Framework;
+using WebApp_Apoteka.Models;
 using WebApp_Apoteka.WebApoteka_Interfaces;
 using WebApp_Apoteka.WebApoteka_Services;
 
@@ -33,9 +37,17 @@ namespace WebApp_Apoteka
             services.AddScoped<IDobavljacServices, DobavljacServices>();
             services.AddScoped<IApotekarServices, ApotekarServices>();
             services.AddScoped<IKorisnikServices, KorisnikServices>();
-
             services.AddDbContext<MojDbContext>(c => c.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+            services.AddIdentity<AppUser, IdentityRole>()
+                    .AddEntityFrameworkStores<MojDbContext>();
 
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                              .RequireAuthenticatedUser()
+                              .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            }).AddXmlSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +69,8 @@ namespace WebApp_Apoteka
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

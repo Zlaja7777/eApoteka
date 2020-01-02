@@ -66,6 +66,212 @@ namespace WebApp_Apoteka.Migrations
                     b.ToTable("Opstina");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("WebApp_Apoteka.Models.AppUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ApotekarID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApotekarID");
+
+                    b.HasIndex("KorisnikID");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
             modelBuilder.Entity("WebApp_Apoteka.Models.Clanak", b =>
                 {
                     b.Property<int>("ClanakID")
@@ -73,12 +279,15 @@ namespace WebApp_Apoteka.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApotekarID")
-                        .HasColumnType("int");
+                    b.Property<string>("ApotekarID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ClanakID");
 
-                    b.HasIndex("ApotekarID");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("clanak");
                 });
@@ -161,8 +370,8 @@ namespace WebApp_Apoteka.Migrations
                     b.Property<bool>("ImaRadnoIskustvo")
                         .HasColumnType("bit");
 
-                    b.Property<int>("KorisnikID")
-                        .HasColumnType("int");
+                    b.Property<string>("KorisnikID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Obrazlozenje")
                         .HasColumnType("nvarchar(max)");
@@ -176,9 +385,12 @@ namespace WebApp_Apoteka.Migrations
                     b.Property<string>("ZavrsenaSkola")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("appUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ID");
 
-                    b.HasIndex("KorisnikID");
+                    b.HasIndex("appUserId");
 
                     b.ToTable("konkursPraksa");
                 });
@@ -199,17 +411,11 @@ namespace WebApp_Apoteka.Migrations
                     b.Property<DateTime>("DatumRodjenja")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Ime")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OpstinaRodjenjaID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Prezime")
                         .HasColumnType("nvarchar(max)");
@@ -236,17 +442,20 @@ namespace WebApp_Apoteka.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("KorisnikID")
-                        .HasColumnType("int");
+                    b.Property<string>("KorisnikID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LijekID")
                         .HasColumnType("int");
 
+                    b.Property<string>("appUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("KosaricaID");
 
-                    b.HasIndex("KorisnikID");
-
                     b.HasIndex("LijekID");
+
+                    b.HasIndex("appUserId");
 
                     b.ToTable("kosarica");
                 });
@@ -308,8 +517,8 @@ namespace WebApp_Apoteka.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApotekarID")
-                        .HasColumnType("int");
+                    b.Property<string>("ApotekarID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("datum")
                         .HasColumnType("datetime2");
@@ -346,8 +555,8 @@ namespace WebApp_Apoteka.Migrations
                     b.Property<int>("gradDostaveID")
                         .HasColumnType("int");
 
-                    b.Property<int>("korisnikID")
-                        .HasColumnType("int");
+                    b.Property<string>("korisnikID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("vrijednostNarudzbe")
                         .HasColumnType("float");
@@ -363,8 +572,8 @@ namespace WebApp_Apoteka.Migrations
 
             modelBuilder.Entity("WebApp_Apoteka.Models.RezervacijaTermina", b =>
                 {
-                    b.Property<int>("KorisnikID")
-                        .HasColumnType("int");
+                    b.Property<string>("KorisnikID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("UslugaID")
                         .HasColumnType("int");
@@ -434,8 +643,8 @@ namespace WebApp_Apoteka.Migrations
                     b.Property<string>("Napomena")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Naziv")
-                        .HasColumnType("int");
+                    b.Property<string>("Naziv")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
@@ -451,13 +660,73 @@ namespace WebApp_Apoteka.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebApp_Apoteka.Models.Clanak", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Apoteka.Models.Apotekar", "Apotekar")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
-                        .HasForeignKey("ApotekarID")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApp_Apoteka.Models.AppUser", b =>
+                {
+                    b.HasOne("Apoteka.Models.Apotekar", "apotekar")
+                        .WithMany()
+                        .HasForeignKey("ApotekarID");
+
+                    b.HasOne("WebApp_Apoteka.Models.Korisnik", "korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikID");
+                });
+
+            modelBuilder.Entity("WebApp_Apoteka.Models.Clanak", b =>
+                {
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("WebApp_Apoteka.Models.DetaljiOnlineNarudzbe", b =>
@@ -486,11 +755,9 @@ namespace WebApp_Apoteka.Migrations
 
             modelBuilder.Entity("WebApp_Apoteka.Models.KonkursPraksa", b =>
                 {
-                    b.HasOne("WebApp_Apoteka.Models.Korisnik", "Korisnik")
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", "appUser")
                         .WithMany()
-                        .HasForeignKey("KorisnikID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("appUserId");
                 });
 
             modelBuilder.Entity("WebApp_Apoteka.Models.Korisnik", b =>
@@ -510,17 +777,15 @@ namespace WebApp_Apoteka.Migrations
 
             modelBuilder.Entity("WebApp_Apoteka.Models.Kosarica", b =>
                 {
-                    b.HasOne("WebApp_Apoteka.Models.Korisnik", "Korisnik")
-                        .WithMany()
-                        .HasForeignKey("KorisnikID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApp_Apoteka.Models.Lijek", "Lijek")
                         .WithMany()
                         .HasForeignKey("LijekID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", "appUser")
+                        .WithMany()
+                        .HasForeignKey("appUserId");
                 });
 
             modelBuilder.Entity("WebApp_Apoteka.Models.Lijek", b =>
@@ -534,11 +799,9 @@ namespace WebApp_Apoteka.Migrations
 
             modelBuilder.Entity("WebApp_Apoteka.Models.Nabavka", b =>
                 {
-                    b.HasOne("Apoteka.Models.Apotekar", "Apotekar")
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", "Apotekar")
                         .WithMany()
-                        .HasForeignKey("ApotekarID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApotekarID");
                 });
 
             modelBuilder.Entity("WebApp_Apoteka.Models.OnlineNarudzba", b =>
@@ -549,16 +812,14 @@ namespace WebApp_Apoteka.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApp_Apoteka.Models.Korisnik", "korisnik")
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", "korisnik")
                         .WithMany()
-                        .HasForeignKey("korisnikID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("korisnikID");
                 });
 
             modelBuilder.Entity("WebApp_Apoteka.Models.RezervacijaTermina", b =>
                 {
-                    b.HasOne("WebApp_Apoteka.Models.Korisnik", "korisnik")
+                    b.HasOne("WebApp_Apoteka.Models.AppUser", "korisnik")
                         .WithMany()
                         .HasForeignKey("KorisnikID")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,4 +1,4 @@
-﻿
+﻿@inject SignInManager<AppUser> signInManager
 @{
     ViewData["Title"] = "DefaultLayout";
 }
@@ -52,7 +52,7 @@
 
 
         <ul id="Navigation-bar">
-            <li><a>Home</a></li>
+            <li><a href="/Home/Index">Home</a></li>
             <li><a>Apoteka (a)</a></li>
             <li><a href ="/Usluga/UslugaHome" class="nav-link text-dark">Usluge</a></li>
             <li><a href ="/Lijek/">Online apoteka</a></li>
@@ -61,8 +61,17 @@
 
         </ul>
         <div id="Reg-Login">
-            <a class="nav-link text-dark">Login</a>
-            <a href="/Registracija/DodajKorisnika" class="nav-link text-dark">Registracija</a>
+            @if (signInManager.IsSignedIn(User))
+            {
+                <a href="/Account/Logout" class="nav-link text-dark">Logout @User.Identity.Name</a>
+
+
+            }
+            else
+            {
+                <a href="/Account/Login" class="nav-link text-dark">Login</a>
+                <a href="/Account/Registracija" class="nav-link text-dark">Registracija</a>
+            }
         </div>
     </div>
 

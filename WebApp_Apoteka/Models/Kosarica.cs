@@ -9,8 +9,10 @@ namespace WebApp_Apoteka.Models
     {
         public int KosaricaID { get; set; }
 
-        public int KorisnikID { get; set; }
-        public Korisnik Korisnik { get; set; }
+        public string KorisnikID { get; set; }
+
+        public AppUser appUser { get; set; }
+        //public Korisnik Korisnik { get; set; }
         public int LijekID { get; set; }
         public Lijek Lijek { get; set; }
 

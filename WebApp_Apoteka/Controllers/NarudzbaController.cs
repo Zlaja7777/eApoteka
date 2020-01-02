@@ -51,7 +51,7 @@ namespace WebApp_Apoteka.Controllers
             {
                 var model = db.kosarica.Find(id);
                 model.LijekID = id;
-                model.KorisnikID = 1; //treba getat logiranog ili traziti registraciju
+                //model.KorisnikID = 1; //treba getat logiranog ili traziti registraciju
             }
             else
             {

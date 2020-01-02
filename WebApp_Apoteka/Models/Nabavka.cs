@@ -9,8 +9,9 @@ namespace WebApp_Apoteka.Models
     public class Nabavka
     {
         public int ID { get; set; }
-        public int ApotekarID { get; set; }
-        public Apotekar Apotekar { get; set; }
+        public string ApotekarID { get; set; }
+        public AppUser Apotekar { get; set; }
+        //public Apotekar Apotekar { get; set; }
         public DateTime datum { get; set; }
         public double vrijednostNarudzbe { get; set; }
 
