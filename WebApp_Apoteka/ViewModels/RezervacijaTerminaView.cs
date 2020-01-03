@@ -9,7 +9,7 @@ namespace WebApp_Apoteka.ViewModels
         public class Podaci
         {
             public int UslugaID{ get; set; }
-            public int KorisnikID { get; set; }
+            public string KorisnikID { get; set; }
             public string ImePrezime  { get; set; }
             public string NazivUsluge { get; set; }
             public DateTime DatumRezervacije { get; set; }

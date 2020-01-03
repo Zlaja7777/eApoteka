@@ -1,0 +1,18 @@
+﻿
+@{
+    Layout = null;
+}
+@model Lijek
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PrikaziLijek</title>
+
+</head>
+<body>
+    <h3>@Model.NazivLijeka</h3>
+    <a href="/Narudzba/DodajKosaricu?lijekID=@Model.LijekID&">Dodaj u kosaricu</a>
+</body>
+</html>

@@ -71,9 +71,9 @@ namespace WebApp_Apoteka.Controllers
                         await _signInManager.SignInAsync(user, isPersistent: false);
 
                     }
-                    return RedirectToAction("DodijeliUlogu", "Administracija", new DodijeliUloguVM { nazivUloge = "Korisnik", korisnikID = user.Id });
+                    //return RedirectToAction("DodijeliUlogu", "Administracija", new DodijeliUloguVM { nazivUloge = "Korisnik", korisnikID = user.Id });
 
-                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors)
                 {

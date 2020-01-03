@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using WebApp_Apoteka.Entity_Framework;
@@ -15,10 +16,11 @@ namespace WebApp_Apoteka.Controllers
     public class UslugaController: Controller
     {
         private MojDbContext db;
-
-        public UslugaController(MojDbContext _db)
+        private readonly UserManager<AppUser> userManager;
+        public UslugaController(MojDbContext _db, UserManager<AppUser> userManager)
         {
             db = _db;
+            this.userManager = userManager;
         }
         
         public IActionResult DodajUsluga(int id)
@@ -101,13 +103,16 @@ namespace WebApp_Apoteka.Controllers
         {
             return View();
         }
-        public IActionResult RezervisiTermin(int uslugaID)
+        public async Task<IActionResult> RezervisiTermin(int uslugaID)
 
         { 
             //onemoguciti da broj rezervacija predje broj pacijenata!!
             RezervacijaTermina rz = new RezervacijaTermina();
             rz.UslugaID = uslugaID;
-            //rz.KorisnikID = 1; // trebat ce getat logiranog, ovo je default vrijednost
+
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            rz.KorisnikID = user.Id;
+       
             rz.DatumVrijemeRezervacije = DateTime.Now;
             db.rezervacijaTermina.Add(rz);
 
@@ -122,22 +127,30 @@ namespace WebApp_Apoteka.Controllers
                 podaci = db.rezervacijaTermina.Select(rz => new RezervacijaTerminaView.Podaci
                 {
                     NazivUsluge = rz.usluga.Naziv,
-                    //ImePrezime = rz.korisnik.Ime + " " +rz.korisnik.Prezime,
+                    ImePrezime = rz.korisnik.korisnik.Ime+ " " +rz.korisnik.korisnik.Prezime,
                     DatumRezervacije = rz.DatumVrijemeRezervacije,
                     UslugaID = rz.usluga.ID,
-                    //KorisnikID = rz.KorisnikID
+                    KorisnikID = rz.KorisnikID,
 
                 }).ToList()
             };
             return View(rz); 
         }
-        public IActionResult ObrisiRezervaciju(int id, int id2)
+        public async Task<IActionResult> ObrisiRezervaciju(int id)
         {
 
-            SqlCommand command = new SqlCommand(
-                "DELETE FROM rezervacijaTermina WHERE UslugaID == '@id' and"
-                );
-            
+            SqlConnection sql = new SqlConnection();
+            sql.ConnectionString = db.GetConnectionString();
+            sql.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sql;
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            string userID = user.Id;
+
+
+            cmd.CommandText = "delete from rezervacijaTermina where UslugaID=" + id + " and KorisnikID= '" + userID + "'";
+
+            cmd.ExecuteNonQuery();
             db.SaveChanges();
             return View();
         }

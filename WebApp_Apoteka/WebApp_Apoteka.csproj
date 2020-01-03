@@ -30,7 +30,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Usluga\" />
-    <Folder Include="Views\Narudzba\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Usluga\EmptyHtmlFile.cshtml" />

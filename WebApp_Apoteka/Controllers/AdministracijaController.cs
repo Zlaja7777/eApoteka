@@ -55,7 +55,8 @@ namespace WebApp_Apoteka.Controllers
         public async Task<AppUser> GetCurrentUser()
         {
             //var user = await userManager.GetUserAsync(HttpContext.User);
-            return await userManager.GetUserAsync(HttpContext.User);
+            var user= await userManager.GetUserAsync(HttpContext.User);
+            return user;
         }
 
         public IActionResult RolePrikaz()

@@ -37,7 +37,11 @@ namespace WebApp_Apoteka.Entity_Framework
         public DbSet<Clanak> clanak{ get; set; }
 
 
+        public string GetConnectionString()
+        {
 
+            return " Server= app.fit.ba,1431;Database=WebApoteka;Trusted_Connection=false;MultipleActiveResultSets=true;User=WebApotekaUser;Password=Dell12345;";
+        }
 
 
 
