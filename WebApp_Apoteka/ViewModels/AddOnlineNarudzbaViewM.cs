@@ -9,8 +9,8 @@ namespace WebApp_Apoteka.ViewModels
     public class AddOnlineNarudzbaViewM
     {
         public int ID { get; set; }
-        public int korisnikID { get; set; }
-        public Korisnik korisnik { get; set; } //ovdje treba getat logirane
+        public string korisnikID { get; set; }
+        public Korisnik korisnik { get; set; } 
 
         public DateTime datum { get; set; }
         public double vrijednostNarudzbe { get; set; }

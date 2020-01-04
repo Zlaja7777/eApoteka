@@ -16,5 +16,7 @@ namespace WebApp_Apoteka.Models
         public int LijekID { get; set; }
         public Lijek Lijek { get; set; }
 
+        public int kolicina { get; set; }
+
     }
 }
