@@ -19,7 +19,7 @@
             //<form asp-action="Ukloni" asp-route="@NazivUloge">
             <label asp-for="@Model[i].UserID" display></label>
             <label>@Model[i].UserName</label>
-            <input type="submit" class="btn btn-danger" value="Ukloni" />
+            <input type="submit" class="btn btn-danger" value="Ukloni" /> <br />
             //</form>
         }
         @if (Model.Count == 0)
@@ -31,6 +31,15 @@
         @if (NazivUloge == "Korisnik")
         {
             <a class="btn btn-primary" asp-controller="Account" asp-action="Registracija">Dodaj korisnika</a>
+        }
+        else if (NazivUloge == "Apotekar")
+        {
+            <a class="btn btn-primary" asp-controller="Account" asp-action="AddApotekara">Dodaj korisnika</a>
+
+        }
+        else if (NazivUloge == "Admin")
+        {
+            <a class="btn btn-primary" asp-controller="Account" asp-action="AddAdmina">Dodaj admina</a>
         }
         <a asp-action="UrediUlogu" asp-route-id="@ulogaID" class="btn btn-primary">Nazad </a>
     </div>
