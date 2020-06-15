@@ -11,6 +11,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>DodajLijek</title>
     <style>
         .forma {
@@ -23,22 +25,26 @@
             border: 6px solid #2b731e;
         }
 
-        .forma input{
+            .forma input {
                 margin-bottom: 20px;
                 width: 100%;
                 padding: 10px;
                 font-family: Calibri;
                 font-size: medium;
             }
-        #k{
+
+        #k {
             margin-bottom: 20px;
-                width: 100%;
-                padding: 10px;
-                font-family: Calibri;
-                font-size: medium;
+            width: 100%;
+            padding: 10px;
+            font-family: Calibri;
+            font-size: medium;
         }
-        a{
-            color:#2b731e; font-family: Calibri; font-size: medium
+
+        a {
+            color: #2b731e;
+            font-family: Calibri;
+            font-size: medium
         }
     </style>
 </head>
@@ -46,57 +52,98 @@
     <form asp-action="PohraniLijek" method="post" class="forma">
         @if (Model.LijekID == 0)
         {
+
             <input asp-for="LijekID" hidden />
+            @if (Model.Postojeci)
+            {
+                <span class="text-danger">Naziv lijeka se vec nalazi u bazi!</span>
+            }
+            <span asp-validation-for="NazivLijeka" class="text-danger"></span>
             <input asp-for="NazivLijeka" placeholder="Naziv lijeka" />
 
-
+            <span asp-validation-for="InternacionalniGenerickiNaziv" class="text-danger"></span>
             <input asp-for="InternacionalniGenerickiNaziv" placeholder="Internacionalni genericki naziv" />
 
 
+            <span asp-validation-for="KvalitativniIKvantitativniSastav" class="text-danger"></span>
             <input asp-for="KvalitativniIKvantitativniSastav" placeholder="Kvalitatvni i kvantitativni sastav" />
 
 
+            <span asp-validation-for="FarmaceutskiOblik" class="text-danger"></span>
             <input asp-for="FarmaceutskiOblik" placeholder="Farmaceutski oblik" />
+
             <a>Kategorija</a>
+
+            <span asp-validation-for="KategorijeID" class="text-danger">
+
+            </span>
             <select asp-for="KategorijeID" asp-items="Model.ListaKategorija" style="        margin-bottom: 20px;
         width: 100%;
         padding: 10px;
         font-family: Calibri;
         font-size: medium">
-                <option>Odaberite kategoriju</option>
+                <option>Odaberi kategoriju</option>
             </select>
+
+            <span asp-validation-for="NacinPrimjene" class="text-danger"></span>
             <input asp-for="NacinPrimjene" placeholder="Doziranje i nacin primjene" />
+
             <a>Nabavna cijena (KM)</a>
+
+            <span asp-validation-for="NabavnaCijena" class="text-danger"></span>
             <input asp-for="NabavnaCijena " placeholder="Nabavna cijena" />
+
             <a>Prodajna cijena (KM)</a>
+            @if (Model.NabavnaCijena > Model.ProdajnaCijena)
+            {
+                <span class="text-danger">Prodajna cijena mora biti veca od nabavne!</span>
+            }
+            <span asp-validation-for="ProdajnaCijena" class="text-danger"></span>
             <input asp-for="ProdajnaCijena" placeholder="Prodajna cijena" />
+
             <a>Rok trajanja (izrazen u mjesecima)</a>
+            <span asp-validation-for="RokTrajanjaMjeseci" class="text-danger"></span>
             <input asp-for="RokTrajanjaMjeseci" placeholder="Rok trajanja (izrazen u mjesecima)" />
 
+
+            <span asp-validation-for="NazivProizvodjaca" class="text-danger"></span>
             <input asp-for="NazivProizvodjaca" placeholder="Naziv proizvodjaca" />
 
 
 
-            <a style="color:#2b731e; font-family: Calibri; font-size: medium">
-                Datum dodavanja u promet
+            @*<a style="color:#2b731e; font-family: Calibri; font-size: medium">
+                Datum dodavanja u promet:
             </a>
-            <input type="date" asp-for="DatumProizvodnje" />
+            <input type="date" value="@DateTime.Now.GetDateTimeFormats()">*@
+
 
             <input type="submit" value="Dodaj lijek" style="background-color:#2b731e; color: #FAFAFA " />
         }
         else
         {
+
+
             <input asp-for="LijekID" hidden />
+            @if (Model.Postojeci)
+            {
+                <span class="text-danger">Naziv lijeka se vec nalazi u bazi!</span>
+            }
+            <span asp-validation-for="NazivLijeka" class="text-danger"></span>
             <input asp-for="NazivLijeka" value=@Model.NazivLijeka />
 
 
+            <span asp-validation-for="InternacionalniGenerickiNaziv" class="text-danger"></span>
             <input asp-for="InternacionalniGenerickiNaziv" value=@Model.InternacionalniGenerickiNaziv />
 
-
+            <span asp-validation-for="KvalitativniIKvantitativniSastav" class="text-danger"></span>
             <input asp-for="KvalitativniIKvantitativniSastav" value=@Model.KvalitativniIKvantitativniSastav />
 
 
+            <span asp-validation-for="FarmaceutskiOblik" class="text-danger"></span>
             <input asp-for="FarmaceutskiOblik" value=@Model.FarmaceutskiOblik />
+
+
+            <span asp-validation-for="KategorijeID" class="text-danger"></span>
             <a>Kategorija</a>
             <select asp-for="KategorijeID" asp-items="Model.ListaKategorija" style="margin-bottom: 20px;
                 width: 100%;
@@ -105,14 +152,26 @@
                 font-size: medium">
                 <option>Odaberite kategoriju</option>
             </select>
+            <span asp-validation-for="NacinPrimjene" class="text-danger"></span>
             <input asp-for="NacinPrimjene" value=@Model.NacinPrimjene />
+
             <a>Nabavna cijena (KM)</a>
+            <span asp-validation-for="NabavnaCijena" class="text-danger"></span>
             <input asp-for="NabavnaCijena" value=@Model.NabavnaCijena />
+
             <a>Prodajna cijena (KM)</a>
+            @if (Model.NabavnaCijena > Model.ProdajnaCijena)
+            {
+                <span class="text-danger">Prodajna cijena mora biti veca od nabavne!</span>
+            }
+            <span asp-validation-for="ProdajnaCijena" class="text-danger"></span>
             <input asp-for="ProdajnaCijena" value=@Model.ProdajnaCijena />
+
             <a>Rok trajanja (izrazen u mjesecima)</a>
+            <span asp-validation-for="RokTrajanjaMjeseci" class="text-danger"></span>
             <input asp-for="RokTrajanjaMjeseci" value=@Model.RokTrajanjaMjeseci />
 
+            <span asp-validation-for="NazivProizvodjaca" class="text-danger"></span>
             <input asp-for="NazivProizvodjaca" value=@Model.NazivProizvodjaca />
 
 
@@ -127,3 +186,6 @@
     </form>
 </body>
 </html>
+<script>
+   
+</script>

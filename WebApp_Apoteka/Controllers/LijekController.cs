@@ -22,6 +22,7 @@ namespace WebApp_Apoteka.Controllers
             AddLijekViewM model = new AddLijekViewM
             {
                 ListaKategorija = db.kategorija.Select(k => new SelectListItem { Value = k.KategorijaID.ToString(), Text = k.NazivKategorije }).ToList()
+                , DatumProizvodnje = DateTime.Now
             };
             if(id != 0)
             {
@@ -41,47 +42,80 @@ namespace WebApp_Apoteka.Controllers
             }
             return View(model);
         }
+
+      
+        private bool ProvjeriNazivLijeka(string naziv, int id)
+        {
+            if (db.Lijek.Where(w=>w.NazivLijeka == naziv && w.LijekID != id).Any())
+            {
+                return true;
+            }
+            else if (db.Lijek.Where(w => w.NazivLijeka == naziv && w.LijekID == 0).Any())
+            {
+                return true;
+            }
+            return false;
+        }
         public IActionResult PohraniLijek(AddLijekViewM m)
         {
-            if (m.LijekID == 0)
+            if (ProvjeriNazivLijeka(m.NazivLijeka, m.LijekID))
             {
-                Lijek lijek = new Lijek
+                m.ListaKategorija = db.kategorija.Select(k => new SelectListItem { Value = k.KategorijaID.ToString(), Text = k.NazivKategorije }).ToList();
+                m.DatumProizvodnje = DateTime.Now;
+                m.Postojeci = true;
+                return View("DodajLijek", m);
+            }
+           
+
+            if (ModelState.IsValid && m.NabavnaCijena < m.ProdajnaCijena)
+            {
+                if (m.LijekID == 0)
                 {
-                    LijekID = m.LijekID,
-                    NazivLijeka = m.NazivLijeka,
-                    InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv,
-                    KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav,
-                    FarmaceutskiOblik = m.FarmaceutskiOblik,
-                    NacinPrimjene = m.NacinPrimjene,
-                    RokTrajanjaMjeseci = m.RokTrajanjaMjeseci,
-                    NazivProizvodjaca = m.NazivProizvodjaca,
-                    DatumProizvodnje = m.DatumProizvodnje,
-                    KategorijaID = m.KategorijeID,
-                    NabavnaCijena = m.NabavnaCijena,
-                    ProdajnaCijena = m.ProdajnaCijena,
-                };
-                db.Lijek.Add(lijek);
+                    Lijek lijek = new Lijek
+                    {
+                        LijekID = m.LijekID,
+                        NazivLijeka = m.NazivLijeka,
+                        InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv,
+                        KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav,
+                        FarmaceutskiOblik = m.FarmaceutskiOblik,
+                        NacinPrimjene = m.NacinPrimjene,
+                        RokTrajanjaMjeseci = m.RokTrajanjaMjeseci,
+                        NazivProizvodjaca = m.NazivProizvodjaca,
+                        DatumProizvodnje = m.DatumProizvodnje,
+                        KategorijaID = m.KategorijeID,
+                        NabavnaCijena = m.NabavnaCijena,
+                        ProdajnaCijena = m.ProdajnaCijena,
+                    };
+                    db.Lijek.Add(lijek);
+                }
+
+                else if (m.LijekID != 0)
+                {
+                    Lijek l = db.Lijek.Find(m.LijekID);
+
+                    l.NazivLijeka = m.NazivLijeka;
+                    l.InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv;
+                    l.KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav;
+                    l.FarmaceutskiOblik = m.FarmaceutskiOblik;
+                    l.NacinPrimjene = m.NacinPrimjene;
+                    l.RokTrajanjaMjeseci = m.RokTrajanjaMjeseci;
+                    l.NazivProizvodjaca = m.NazivProizvodjaca;
+                    l.DatumProizvodnje = m.DatumProizvodnje;
+                    l.KategorijaID = m.KategorijeID;
+                    l.NabavnaCijena = m.NabavnaCijena;
+                    l.ProdajnaCijena = m.ProdajnaCijena;
+                    db.SaveChanges();
+                    return View("PohranaUredjenogLijeka");
+                }
+
+                db.SaveChanges();
             }
             else
             {
-                Lijek l = db.Lijek.Find(m.LijekID);
-      
-                l.NazivLijeka = m.NazivLijeka;
-                l.InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv;
-                l.KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav;
-                l.FarmaceutskiOblik = m.FarmaceutskiOblik;
-                l.NacinPrimjene = m.NacinPrimjene;
-                l.RokTrajanjaMjeseci = m.RokTrajanjaMjeseci;
-                l.NazivProizvodjaca = m.NazivProizvodjaca;
-                l.DatumProizvodnje = m.DatumProizvodnje;
-                l.KategorijaID = m.KategorijeID;
-                l.NabavnaCijena = m.NabavnaCijena;
-                l.ProdajnaCijena = m.ProdajnaCijena;
-                db.SaveChanges();
-                return View("PohranaUredjenogLijeka");
+                m.ListaKategorija = db.kategorija.Select(k => new SelectListItem { Value = k.KategorijaID.ToString(), Text = k.NazivKategorije }).ToList();
+                m.DatumProizvodnje = DateTime.Now;
+                return View("DodajLijek", m);
             }
-           
-            db.SaveChanges();
            
             return View();
         }
