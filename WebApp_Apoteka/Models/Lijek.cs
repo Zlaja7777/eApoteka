@@ -9,9 +9,6 @@ namespace WebApp_Apoteka.Models
     {
         public int LijekID { get; set; }
         public string NazivLijeka { get; set; }
-
-        public string InternacionalniGenerickiNaziv { get; set; }
-
         public string KvalitativniIKvantitativniSastav { get; set; }
 
         public string FarmaceutskiOblik { get; set; }
@@ -23,12 +20,12 @@ namespace WebApp_Apoteka.Models
         public int RokTrajanjaMjeseci { get; set; }
 
         public string NazivProizvodjaca { get; set; }
-
-        public string SlikaLijeka { get; set; }
+        
+        public int Kolicina { get; set; }
         public int KategorijaID { get; set; }
         public Kategorija Kategorija { get; set; }
 
-        public DateTime DatumProizvodnje { get; set; }
+        public DateTime DatumDodavanjaUPromet { get; set; }
 
 
     }

@@ -29,16 +29,17 @@ namespace WebApp_Apoteka.Controllers
                 Lijek l = db.Lijek.Find(id);
                 model.LijekID = l.LijekID;
                 model.NazivLijeka = l.NazivLijeka ;
-                model.InternacionalniGenerickiNaziv = l.InternacionalniGenerickiNaziv;
+            
                 model.KvalitativniIKvantitativniSastav = l.KvalitativniIKvantitativniSastav;
                 model.FarmaceutskiOblik = l.FarmaceutskiOblik;
                 model.NacinPrimjene = l.NacinPrimjene;
                 model.RokTrajanjaMjeseci = l.RokTrajanjaMjeseci;
                 model.NazivProizvodjaca = l.NazivProizvodjaca;
-                model.DatumProizvodnje = l.DatumProizvodnje;
+                model.DatumProizvodnje = l.DatumDodavanjaUPromet;
                 model.KategorijeID = l.KategorijaID;
                 model.NabavnaCijena = l.NabavnaCijena;
                 model.ProdajnaCijena = l.ProdajnaCijena;
+                model.Kolicina = l.Kolicina;
             }
             return View(model);
         }
@@ -75,18 +76,23 @@ namespace WebApp_Apoteka.Controllers
                     {
                         LijekID = m.LijekID,
                         NazivLijeka = m.NazivLijeka,
-                        InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv,
+
                         KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav,
                         FarmaceutskiOblik = m.FarmaceutskiOblik,
                         NacinPrimjene = m.NacinPrimjene,
                         RokTrajanjaMjeseci = m.RokTrajanjaMjeseci,
                         NazivProizvodjaca = m.NazivProizvodjaca,
-                        DatumProizvodnje = m.DatumProizvodnje,
+                        DatumDodavanjaUPromet = m.DatumProizvodnje,
                         KategorijaID = m.KategorijeID,
                         NabavnaCijena = m.NabavnaCijena,
                         ProdajnaCijena = m.ProdajnaCijena,
+                        Kolicina = m.Kolicina
                     };
                     db.Lijek.Add(lijek);
+                    db.SaveChanges();
+                   
+                    return RedirectToAction("ZapocniNabavku", "Nabavka", new {lijekID = db.Lijek.ToList().LastOrDefault().LijekID}
+                );
                 }
 
                 else if (m.LijekID != 0)
@@ -94,16 +100,17 @@ namespace WebApp_Apoteka.Controllers
                     Lijek l = db.Lijek.Find(m.LijekID);
 
                     l.NazivLijeka = m.NazivLijeka;
-                    l.InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv;
+                  
                     l.KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav;
                     l.FarmaceutskiOblik = m.FarmaceutskiOblik;
                     l.NacinPrimjene = m.NacinPrimjene;
                     l.RokTrajanjaMjeseci = m.RokTrajanjaMjeseci;
                     l.NazivProizvodjaca = m.NazivProizvodjaca;
-                    l.DatumProizvodnje = m.DatumProizvodnje;
+                    l.DatumDodavanjaUPromet = m.DatumProizvodnje;
                     l.KategorijaID = m.KategorijeID;
                     l.NabavnaCijena = m.NabavnaCijena;
                     l.ProdajnaCijena = m.ProdajnaCijena;
+                    l.Kolicina = m.Kolicina;
                     db.SaveChanges();
                     return View("PohranaUredjenogLijeka");
                 }
@@ -121,7 +128,7 @@ namespace WebApp_Apoteka.Controllers
         }
         
        
-        public IActionResult PrikaziLijekove()
+        public IActionResult PrikaziLijekove(bool pronadjen1)
         {
 
             LijekView model = new LijekView
@@ -130,21 +137,23 @@ namespace WebApp_Apoteka.Controllers
                 {
                     LijekID = m.LijekID,
                     NazivLijeka = m.NazivLijeka,
-                    InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv,
+                   
                     KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav,
                     FarmaceutskiOblik = m.FarmaceutskiOblik,
                     NacinPrimjene = m.NacinPrimjene,
                     RokTrajanjaMjeseci = m.RokTrajanjaMjeseci,
                     NazivProizvodjaca = m.NazivProizvodjaca,
-                    DatumProizvodnje = m.DatumProizvodnje,
+                    DatumProizvodnje = m.DatumDodavanjaUPromet,
                     NazivKategorije = m.Kategorija.NazivKategorije,
                     NabavnaCijena = m.NabavnaCijena,
                     ProdajnaCijena = m.ProdajnaCijena,
-                }).ToList()
+                    Kolicina = m.Kolicina
+                }).ToList(), postojeci = pronadjen1
+               
             };
-          
-
-           
+            int stanjeKosarice = db.kosarica.ToList().Count();
+            ViewData["stanjeKosarice"] = stanjeKosarice;
+            
            
             return View(model);
         }

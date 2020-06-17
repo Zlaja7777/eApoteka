@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebApp_Apoteka.Entity_Framework;
 using WebApp_Apoteka.Models;
 using WebApp_Apoteka.ViewModels;
@@ -30,17 +31,33 @@ namespace WebApp_Apoteka.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> DodajUKosaricu(int lijekID, int kolicina)
+        private bool ProvjeriKošaricu(int lijekID)
+        {
+            if (db.kosarica.Where(w=>w.LijekID == lijekID).Any())
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<IActionResult> DodajUKosaricu(LijekView lw)
         {
            
-            Kosarica ad = new Kosarica();
-            var user = await userManager.GetUserAsync(HttpContext.User);
-            ad.KorisnikID = user.Id;
-            ad.LijekID = lijekID;
-            ad.kolicina = kolicina;
-            db.kosarica.Add(ad);
-            db.SaveChanges();
-            return Redirect("/Lijek/PrikaziLijekove");
+
+            if (ModelState.IsValid && lw.OdabranaKolicina <= lw.Kolicina)
+            {
+                Kosarica ad = new Kosarica();
+                var user = await userManager.GetUserAsync(HttpContext.User);
+                ad.KorisnikID = user.Id;
+                ad.LijekID = lw.LijekID;
+                ad.kolicina = lw.OdabranaKolicina;
+                db.kosarica.Add(ad);
+                db.SaveChanges();
+                return Redirect("/Lijek/PrikaziLijekove");
+            }
+            else
+            {
+                return RedirectToAction("PrikaziLijek", new { id = lw.LijekID, odabranaKolicina = lw.OdabranaKolicina});
+            }
         }
         
         public async Task<IActionResult> PregledKosarice()
@@ -101,8 +118,13 @@ namespace WebApp_Apoteka.Controllers
         public IActionResult ObrisiKosaricu(int id)
         {
             Kosarica k = db.kosarica.Find(id);
+
             db.Remove(k);
             db.SaveChanges();
+            if (db.kosarica.ToList().Count() == 0)
+            {
+                return Redirect("/Lijek/PrikaziLijekove");
+            }
             return Redirect("/Narudzba/PregledKosarice");
         }
         public async Task<IActionResult> DodajNarudzbu(AddOnlineNarudzbaViewM md)
@@ -130,9 +152,12 @@ namespace WebApp_Apoteka.Controllers
                 {
                     dn.lijekID = l.LijekID;
                     dn.kolicina = l.kolicina;
-                    dn.cijenaLijeka = 2;
+                    dn.cijenaLijeka = db.Lijek.Where(w=>w.LijekID == l.LijekID).FirstOrDefault().ProdajnaCijena;
                     dn.ukupnaCijenaStavke = dn.cijenaLijeka * dn.kolicina;
                     db.detaljiOnlineNarudzbe.Add(dn);
+                    Lijek lijek = db.Lijek.Find(l.LijekID);
+                    lijek.Kolicina -= dn.kolicina;
+                    db.Update(lijek);
                     db.SaveChanges();
                 }
             }
@@ -148,29 +173,40 @@ namespace WebApp_Apoteka.Controllers
             db.SaveChanges();
             return View();
         }
-        public IActionResult PrikaziLijek(int id)
+        public IActionResult PrikaziLijek(int id, int odabranaKolicina)
         {
+            if (ProvjeriKošaricu(id))
+            {
+                bool pronadjen = true;
+               
+                return RedirectToAction("PrikaziLijekove", "Lijek", new { pronadjen1 = pronadjen });
+            }
             LijekView model = new LijekView
             {
                 podaci = db.Lijek.Where(s=> s.LijekID == id).Select(m => new LijekView.Podaci
                 {
                     LijekID = m.LijekID,
                     NazivLijeka = m.NazivLijeka,
-                    InternacionalniGenerickiNaziv = m.InternacionalniGenerickiNaziv,
+                   
                     KvalitativniIKvantitativniSastav = m.KvalitativniIKvantitativniSastav,
                     FarmaceutskiOblik = m.FarmaceutskiOblik,
                     NacinPrimjene = m.NacinPrimjene,
                     RokTrajanjaMjeseci = m.RokTrajanjaMjeseci,
                     NazivProizvodjaca = m.NazivProizvodjaca,
-                    DatumProizvodnje = m.DatumProizvodnje,
+                    DatumProizvodnje = m.DatumDodavanjaUPromet,
                     NazivKategorije = m.Kategorija.NazivKategorije,
                     NabavnaCijena = m.NabavnaCijena,
                     ProdajnaCijena = m.ProdajnaCijena,
-                }).ToList()
+                   
+                }).ToList(), Kolicina = db.Lijek.Where(w=>w.LijekID == id).FirstOrDefault().Kolicina, LijekID = db.Lijek.Where(w => w.LijekID == id).FirstOrDefault().LijekID
+
             };
-           
+            
+            model.OdabranaKolicina = odabranaKolicina;
+         
             return View(model);
         }
+
 
     }
 }

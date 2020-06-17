@@ -1,4 +1,4 @@
-﻿@inject SignInManager<AppUser> signInManager
+﻿
 @{
     Layout = "DefaultLayout";
 }
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>Usluga</title>
     <style>
-        .forma a {
+        .forma a{
             text-decoration: none;
             background-color: #2b731e;
             color: white;
@@ -39,18 +39,12 @@
     </style>
 </head>
 <body>
-    <h3>Podaci o uslugama</h3>
-    <div class="forma">
-        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-        {
-            <a href="/Usluga/DodajUsluga?=0">Dodaj uslugu</a>
-            <br /> <br /> <br />
-            <a href="/Usluga/PrikazRezervisanihTermina">Prikaz rezervisanih termina</a>
-        }
-
-        <a href="/Usluga/PrikaziUsluge">Prikaži usluge</a>
+ 
+    <div class= "forma">
+    
         
-
+        
+       
     </div>
 </body>
 </html>

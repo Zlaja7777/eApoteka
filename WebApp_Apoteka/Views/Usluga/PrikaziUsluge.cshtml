@@ -1,6 +1,7 @@
-﻿@{
+﻿@inject SignInManager<AppUser> signInManager
+@{
     Layout = null;
-   
+
 }
 @using WebApp_Apoteka.ViewModels;
 @model UslugaView
@@ -11,7 +12,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>PrikaziLijekove</title>
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </head>
@@ -21,32 +22,36 @@
            border: 6px solid #2b731e; text-align: center">
 
         <tr>
-            
+
             <th>Naziv usluge</th>
             <th>Datum odrzavanja usluge </th>
             <th>Napomena</th>
             <th>BrojPacijenata</th>
-            
+
             <th>Modifikacija podataka</th>
         </tr>
 
         @foreach (var l in Model.podaci)
         {
-    <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
-       
-        <td>@l.Naziv</td>
-        <td>@l.DatumVrijeme</td>
-        <td>@l.Napomena</td>
-        <td>@l.BrojPacijenata</td>
-        <td>
-            <a href="/Usluga/Uklanjanje?id=@l.ID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
+            <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
+
+                <td>@l.Naziv</td>
+                <td>@l.DatumVrijeme</td>
+                <td>@l.Napomena</td>
+                <td>@l.BrojPacijenata</td>
+                <td>
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <a href="/Usluga/Uklanjanje?id=@l.ID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
                 border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Brisi</a>
-            <a href="/Usluga/DodajUsluga?id=@l.ID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
+                        <a href="/Usluga/DodajUsluga?id=@l.ID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
                 border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Uredi</a>
-            <a href="/Usluga/RezervisiTermin?uslugaID=@l.ID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
+                    }
+
+                    <a href="/Usluga/RezervisiTermin?uslugaID=@l.ID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
                 border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Rezervisi termin</a>
-        </td>
-    </tr>
+                </td>
+            </tr>
         }
     </table>
 </body>

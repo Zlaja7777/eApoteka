@@ -15,8 +15,6 @@ namespace WebApp_Apoteka.ViewModels
         public string NazivLijeka { get; set; }
 
 
-        [Required(ErrorMessage = "Internacionalni generički naziv nije unesen!")]
-        public string InternacionalniGenerickiNaziv { get; set; }
 
 
         [Required(ErrorMessage = "Kvalitativni i kvantitativni sastav nije unesen!")]
@@ -63,5 +61,10 @@ namespace WebApp_Apoteka.ViewModels
 
 
         public bool Postojeci { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Kolicina mora biti veća od 0!")]
+        public int Kolicina { get;  set; }
+
+
     }
 }

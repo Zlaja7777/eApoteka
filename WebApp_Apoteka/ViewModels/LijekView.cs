@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp_Apoteka.ViewModels
 {
@@ -15,7 +19,7 @@ namespace WebApp_Apoteka.ViewModels
 
             public string NazivLijeka { get; set; }
 
-            public string InternacionalniGenerickiNaziv { get; set; }
+    
 
             public string KvalitativniIKvantitativniSastav { get; set; }
 
@@ -31,13 +35,29 @@ namespace WebApp_Apoteka.ViewModels
 
             public string NazivProizvodjaca { get; set; }
 
-            public string SlikaLijeka { get; set; }
+           
 
             public string NazivKategorije { get; set; }
 
             public DateTime DatumProizvodnje { get; set; }
             public int KategorijaID { get; internal set; }
+
+
+           
+            public int Kolicina { get; internal set; }
         }
-}
+
+        [Range(1, int.MaxValue, ErrorMessage = "Unesite kolicinu!")]
+
+        public int Kolicina { get; set; }
+
+
+        [Range(1, int.MaxValue, ErrorMessage = "Unesite kolicinu!")]
+        public int OdabranaKolicina { get; set; }
+
+        public int LijekID { get; set; }
+
+        public bool postojeci { get; set; }
+    }
     
 }
