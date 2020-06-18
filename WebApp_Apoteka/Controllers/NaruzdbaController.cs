@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebApp_Apoteka.Entity_Framework;
@@ -31,9 +32,9 @@ namespace WebApp_Apoteka.Controllers
         {
             return View();
         }
-        private bool ProvjeriKošaricu(int lijekID)
+        private bool ProvjeriKošaricu(int lijekID, string loggedUser)
         {
-            if (db.kosarica.Where(w=>w.LijekID == lijekID).Any())
+            if (db.kosarica.Where(w=>w.LijekID == lijekID && loggedUser == w.KorisnikID).Any())
             {
                 return true;
             }
@@ -173,9 +174,10 @@ namespace WebApp_Apoteka.Controllers
             db.SaveChanges();
             return View();
         }
-        public IActionResult PrikaziLijek(int id, int odabranaKolicina)
+        public async Task<IActionResult> PrikaziLijek(int id, int odabranaKolicina)
         {
-            if (ProvjeriKošaricu(id))
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            if (ProvjeriKošaricu(id, user.Id))
             {
                 bool pronadjen = true;
                

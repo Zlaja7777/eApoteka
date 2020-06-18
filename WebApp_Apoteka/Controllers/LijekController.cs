@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp_Apoteka.Entity_Framework;
@@ -12,10 +13,11 @@ namespace WebApp_Apoteka.Controllers
     public class LijekController : Controller
     {
         private MojDbContext db;
-
-        public LijekController(MojDbContext _db)
+        private readonly UserManager<AppUser> userManager;
+        public LijekController(MojDbContext _db, UserManager<AppUser> userManager)
         {
             db = _db;
+            this.userManager = userManager;
         }
         public IActionResult DodajLijek(int id)
         {
@@ -128,8 +130,9 @@ namespace WebApp_Apoteka.Controllers
         }
         
        
-        public IActionResult PrikaziLijekove(bool pronadjen1)
+        public async Task<IActionResult> PrikaziLijekove(bool pronadjen1)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
 
             LijekView model = new LijekView
             {
@@ -151,7 +154,9 @@ namespace WebApp_Apoteka.Controllers
                 }).ToList(), postojeci = pronadjen1
                
             };
-            int stanjeKosarice = db.kosarica.ToList().Count();
+
+
+            int stanjeKosarice = db.kosarica.Where(w=>w.KorisnikID == user.Id).ToList().Count();
             ViewData["stanjeKosarice"] = stanjeKosarice;
             
            

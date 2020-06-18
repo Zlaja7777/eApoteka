@@ -44,7 +44,85 @@ namespace WebApp_Apoteka.Controllers
 
             return View( ad);
         }
+        public async Task<IActionResult>  PrikaziStanje()
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            LijekKolicinaView lk = new LijekKolicinaView
+            {
+                podaci = db.Lijek.Select(s => new LijekKolicinaView.Podaci
+                {
+                    lijekID = s.LijekID,
+                    nabavnaCijenaLijeka = s.NabavnaCijena,
+                    nazivLijeka = s.NazivLijeka,
+                    kolicina = s.Kolicina
+                }).ToList()
+            };
+
+            int stanjeKosarice = db.kosarica.Where(w => w.KorisnikID == user.Id).ToList().Count();
+            ViewData["stanjeKosarice"] = stanjeKosarice;
+
+            return View(lk);
+        }
+        public async Task<IActionResult> NabavnaKosarica(int lijekID, int kolicina)
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            Kosarica k = new Kosarica();
+            k.LijekID = lijekID;
+            k.kolicina = kolicina;
+            k.KorisnikID = user.Id;
+
+            db.Add(k);
+            db.SaveChanges();
+           
+            return PartialView("PrikaziStanje");
+        }
+        public IActionResult PrikaziLijek(int lijekID)
+        {
+            LijekKolicinaView lk = db.Lijek.Select(s => new LijekKolicinaView
+            {
+                lijekID = s.LijekID,
+             
+                nabavnaCijenaLijeka = s.NabavnaCijena,
+                nazivLijeka = s.NazivLijeka
+                
+            }).FirstOrDefault();
+            
+            return PartialView("AjaxPrikazLijeka", lk);
+        }
+
+    
+        public async Task<IActionResult> DodajKosaricu(LijekKolicinaView lw)
+         {
+
+
+                if (ModelState.IsValid )
+                {
+                    Kosarica ad = new Kosarica();
+                    var user = await userManager.GetUserAsync(HttpContext.User);
+                    ad.KorisnikID = user.Id;
+                    ad.LijekID = lw.lijekID;
+                    ad.kolicina = lw.kolicina;
+                    db.kosarica.Add(ad);
+                    db.SaveChanges();
+                    return Redirect("PrikaziStanje");
+                }
+                else
+                {
+                    LijekKolicinaView lw2 = db.Lijek.Where(w=>w.LijekID == lw.lijekID).Select(s => new LijekKolicinaView
+                    {
+                       lijekID = s.LijekID,
+                       nazivLijeka = s.NazivLijeka,
+                       nabavnaCijenaLijeka = s.NabavnaCijena,
+                       pronadjenError = true
+
+                    }).FirstOrDefault();
+                    return View("AjaxPrikazLijeka", lw2);
+                }
+
+            
+        }
       
+
 
     }
 }

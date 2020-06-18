@@ -14,20 +14,30 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            display: grid;
+            grid-template-columns: 10% 80% 10%;
         }
 
-        #header {
-            background-color: grey;
-            height: 200px;
+        #header{
+            background-color: darkseagreen;
+            height: 150px;
             width: 100%;
+            border-radius: 10px;
+            border: 6px solid #2b731e;
+            margin-top: 10px;
         }
 
         #Navigation-bar {
             position: relative;
-            top: 120px;
+            top: 80px;
             margin: 0;
-            padding:0;
+            padding: 0;
             text-align: center;
+            
         }
 
         li {
@@ -37,10 +47,16 @@
 
         #Navigation-bar a {
             font-size: 30px;
+            font-family: Calibri;
+            
         }
 
         #Reg-Login {
-            margin-left: 70%;
+            margin-left: 79%;
+            margin-top: -3%;
+            font-family: Calibri;
+            font-size: 20px;
+            
         }
         #Reg-Login a{
             display:inline-block;
@@ -48,43 +64,50 @@
     </style>
 </head>
 <body>
-    <div id="header">
+    <div>
+
+    </div>
+    <div id="glavni">
+        <div id="header">
 
 
-        <ul id="Navigation-bar">
-            <li><a href="/Home/Index">Home</a></li>
-            @*<li><a>Apoteka (a)</a></li>*@
-            <li><a href="/Usluga/UslugaHome" class="nav-link text-dark">Usluge</a></li>
-            <li><a href="/Lijek/PrikaziLijekove" class="nav-link text-dark">Online apoteka</a></li>
-            <li><a href="/Nabavka/OpcijeNarucivanja" class="nav-link text-dark">Nabavka</a></li>
-            <li><a href="/Narudzbe/Prikazi narudzbe" class="nav-link text-dark">Narudzbe</a></li>
+            <ul id="Navigation-bar">
+                <li><a href="/Home/Index" class="nav-link text-dark">Home</a></li>
+                @*<li><a>Apoteka (a)</a></li>*@
+                <li><a href="/Usluga/UslugaHome" class="nav-link text-dark">Usluge</a></li>
+                <li><a href="/Lijek/PrikaziLijekove" class="nav-link text-dark">Online apoteka</a></li>
+                <li><a href="/Nabavka/OpcijeNarucivanja" class="nav-link text-dark">Nabavka</a></li>
+                <li><a href="/Narudzbe/Prikazi narudzbe" class="nav-link text-dark">Narudzbe</a></li>
 
-            <li><a>O nama</a> </li>
+                <li><a>O nama</a> </li>
 
-        </ul>
-        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-        {
-            <a href="/administracija/RolePrikaz" class="nav-link text-dark" style="display:inline-block;float:left"> Manage roles </a>
-        }
-        <div id="Reg-Login">
-            @if (signInManager.IsSignedIn(User))
+            </ul>
+            @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                <a href="/Account/Logout" class="nav-link text-dark">Logout @User.Identity.Name</a>
+                <a href="/administracija/RolePrikaz" class="nav-link text-dark" style="display:inline-block;float:left"> Manage roles </a>
+            }
+            <div id="Reg-Login">
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <a href="/Account/Logout" class="nav-link text-dark" >Logout @User.Identity.Name</a>
 
 
-            }
-            else
-            {
-                <a href="/Account/Login" class="nav-link text-dark">Login</a>
-                <a href="/Account/Registracija" class="nav-link text-dark">Registracija</a>
-            }
+                }
+                else
+                {
+                    <a href="/Account/Login" class="nav-link text-dark">Login</a>
+                    <a href="/Account/Registracija" class="nav-link text-dark">Registracija</a>
+                }
+            </div>
+        </div>
+
+        <div id="Container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
     </div>
-
-    <div id="Container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    
+    <div></div>
 </body>
 </html>
