@@ -78,7 +78,7 @@ namespace WebApp_Apoteka.Controllers
         }
         public IActionResult PrikaziLijek(int lijekID)
         {
-            LijekKolicinaView lk = db.Lijek.Select(s => new LijekKolicinaView
+            LijekKolicinaView lk = db.Lijek.Where(w=>w.LijekID == lijekID).Select(s => new LijekKolicinaView
             {
                 lijekID = s.LijekID,
              
@@ -121,7 +121,14 @@ namespace WebApp_Apoteka.Controllers
 
             
         }
-      
+        public async Task<IActionResult> ZapocniNabavku()
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            return View();
+        }
+
+
 
 
     }

@@ -1,4 +1,4 @@
-﻿
+﻿@inject SignInManager<AppUser> signInManager
 @{
     Layout = "DefaultLayout";
     bool KosaricaID = false;
@@ -32,28 +32,32 @@
         @foreach (var l in Model.podaci)
         {
 
-    <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
-        @{ 
-            KosaricaID = true;
-        }
-        <td>@l.NazivLijeka</td>
-        <td>@l.Kolicina</td>
-        <td>@l.Cijena</td>
+            <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
+                @{
+                    KosaricaID = true;
+                }
+                <td>@l.NazivLijeka</td>
+                <td>@l.Kolicina</td>
+                <td>@l.Cijena</td>
 
-        <td>@(l.Kolicina * l.Cijena) KM</td>
-        <td>
-            <a href="/Narudzba/ObrisiKosaricu?id=@l.KosaricaID"  class="btn btn-success">Obriši iz kosarice</a>
-        </td>
-    </tr>
-}
+                <td>@(l.Kolicina * l.Cijena) KM</td>
+                <td>
+                    <a href="/Narudzba/ObrisiKosaricu?id=@l.KosaricaID" class="btn btn-success">Obriši iz kosarice</a>
+                </td>
+            </tr>
+        }
 
     </table>
-    @if(KosaricaID == true){
+    @if (KosaricaID == true && signInManager.IsSignedIn(User) && User.IsInRole("Korisnik"))
+    {
 
         <a href="/Narudzba/ZapocniNarudzbu" style="margin-left: 62%" class="btn btn-success">Započni narudžbu</a>
-                
+
     }
-   
+    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a href="/Nabavka/ZapocniNabavku" style="margin-left: 62%" class="btn btn-success">Započni nabavku</a>
+    }
 
 </body>
 </html>
