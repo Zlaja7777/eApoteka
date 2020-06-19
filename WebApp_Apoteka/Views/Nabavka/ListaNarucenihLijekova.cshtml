@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "DefaultLayout";
+    
+    //double vrijednost = (double)ViewData["vrijednost"];
+
+}
+@model NabavkaViewM
+
+@foreach (var n in Model.podaci)
+{
+    <a>@n.ImePrezime</a>
+    <a>@n.datum</a>
+    <a>@n.vrijednostNarudzbe</a>
+    foreach (var nn in n.podaciNabavkeStavke)
+    {
+        <a>@nn.nazivLijeka</a>
+        <a>@nn.kolicina</a>
+    }
+
+    <hr /><hr />
+
+}

@@ -84,7 +84,7 @@
             </ul>
             @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
-                <a href="/administracija/RolePrikaz" class="nav-link text-dark" style="display:inline-block;float:left"> Manage roles </a>
+                <a href="/administracija/RolePrikaz"  style="display:inline-block;float:left"> Manage roles </a>
             }
             <div id="Reg-Login">
                 @if (signInManager.IsSignedIn(User))

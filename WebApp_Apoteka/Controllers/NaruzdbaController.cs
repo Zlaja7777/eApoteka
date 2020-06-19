@@ -78,7 +78,8 @@ namespace WebApp_Apoteka.Controllers
 
                 }).ToList()
              };
-
+            int stanjeKosarice = db.kosarica.Where(w => w.KorisnikID == user.Id).ToList().Count();
+            ViewData["stanjeKosarice"] = stanjeKosarice;
 
             return View(kw);
             
@@ -116,13 +117,14 @@ namespace WebApp_Apoteka.Controllers
             return View(md);
             
         }
-        public IActionResult ObrisiKosaricu(int id)
+        public async Task<IActionResult> ObrisiKosaricu(int id)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
             Kosarica k = db.kosarica.Find(id);
 
             db.Remove(k);
             db.SaveChanges();
-            if (db.kosarica.ToList().Count() == 0)
+            if (db.kosarica.Where(w=>w.KorisnikID == user.Id).ToList().Count() == 0)
             {
                 return Redirect("/Lijek/PrikaziLijekove");
             }

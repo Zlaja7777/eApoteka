@@ -21,5 +21,7 @@ namespace WebApp_Apoteka.ViewModels
 
         public double nabavnaCijena { get; set; }
 
+        public string nazivApoteke { get; set; }
+
     }
 }
