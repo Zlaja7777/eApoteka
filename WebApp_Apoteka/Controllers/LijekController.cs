@@ -88,13 +88,12 @@ namespace WebApp_Apoteka.Controllers
                         KategorijaID = m.KategorijeID,
                         NabavnaCijena = m.NabavnaCijena,
                         ProdajnaCijena = m.ProdajnaCijena,
-                        Kolicina = m.Kolicina
+                       
                     };
                     db.Lijek.Add(lijek);
                     db.SaveChanges();
                    
-                    return RedirectToAction("ZapocniNabavku", "Nabavka", new {lijekID = db.Lijek.ToList().LastOrDefault().LijekID}
-                );
+                    return RedirectToAction("PrikaziStanje", "Nabavka");
                 }
 
                 else if (m.LijekID != 0)
@@ -126,6 +125,7 @@ namespace WebApp_Apoteka.Controllers
                 return View("DodajLijek", m);
             }
            
+
             return View();
         }
         

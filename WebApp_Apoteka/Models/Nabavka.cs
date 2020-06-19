@@ -16,5 +16,7 @@ namespace WebApp_Apoteka.Models
         public double vrijednostNarudzbe { get; set; }
 
         public bool statusNarudzbe { get; set; }
+
+        public DateTime datumPrimanja { get; set; }
     }
 }

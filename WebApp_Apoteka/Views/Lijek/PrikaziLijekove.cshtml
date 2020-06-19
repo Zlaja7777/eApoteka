@@ -2,7 +2,7 @@
 @{
     Layout = "DefaultLayout";
     var stanjeKosarice = (int)ViewData["stanjeKosarice"];
-    
+
 }
 @using WebApp_Apoteka.ViewModels;
 @model LijekView
@@ -18,24 +18,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#myModal").modal('show');
+    <style>
+        th {
+            text-align: center;
         }
-        );
-    </script>
+    </style>
 </head>
+
 <body>
     <br /><br />
     <h3 class="text-success">Prikaz dostupnih lijekova</h3>
     <br />
 
-    <table class="table table-bordered"style="        background-color: #2b731e;
-        color: white;
-       
-        border-radius: 10px;
-        border: 6px solid #2b731e;
-        text-align: center;">
+    <table class="table table-striped" 
+        style= "text-align: center;">
 
         <tr>
 
@@ -51,34 +47,42 @@
             {
                 <th>Modifikacija podataka</th>
             }
+            else if(signInManager.IsSignedIn(User)&& User.IsInRole("Korisnik"))
+            {
+                <th>Pregled</th>
+            }
+
         </tr>
 
         @foreach (var l in Model.podaci)
         {
             if (l.Kolicina > 0)
             {
-                <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
+            <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
 
-                    <td><a href="/Narudzba/PrikaziLijek?id=@l.LijekID">@l.NazivLijeka</a></td>
+                <td>@l.NazivLijeka</td>
 
-                    <td>@l.FarmaceutskiOblik</td>
-                    <td>@l.KvalitativniIKvantitativniSastav</td>
+                <td>@l.FarmaceutskiOblik</td>
+                <td>@l.KvalitativniIKvantitativniSastav</td>
 
-                    <td>@l.ProdajnaCijena KM</td>
-                    <td>@l.RokTrajanjaMjeseci</td>
+                <td>@l.ProdajnaCijena KM</td>
+                <td>@l.RokTrajanjaMjeseci</td>
 
-                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        <td>
-                            <a href="/Lijek/Uklanjanje?id=@l.LijekID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
-                border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Brisi</a>
-                            <a href="/Lijek/DodajLijek?id=@l.LijekID" style="text-decoration: none; height: 15px; background-color: #2b731e; color:white;
-                border-radius: 10px;  border: 6px solid #2b731e;  text-align: center">Uredi</a>
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a href="/Lijek/Uklanjanje?id=@l.LijekID" class="btn btn-danger">Brisi</a>
+                        <a href="/Lijek/DodajLijek?id=@l.LijekID" class="btn btn-info">Uredi</a>
 
-                        </td>
-                    }
+                    </td>
+                }
+                else if (signInManager.IsSignedIn(User) && User.IsInRole("Korisnik"))
+                {
+                    <td><a href="/Narudzba/PrikaziLijek?id=@l.LijekID" class="btn btn-success">+</a></td>
+                 }
+
                 </tr>
-            }
+                    }
 
 
         }
@@ -86,7 +90,7 @@
     @if (stanjeKosarice > 0)
     {
         <a href="/Narudzba/PregledKosarice" class="btn btn-success">Pregledaj kosaricu</a>
-      
+
     }
     @if (Model.postojeci)
     {
@@ -98,8 +102,10 @@
                     <div class="modal-content">
 
                         <div class="modal-body">
-                            <p>Lijek koji ste odabrali se već nalazi u vašoj košarici.  <a href="/Lijek/PrikaziLijekove" class="btn btn-success" data-dismiss="modal">Ok</a></p>
-                          
+                            <nobr>
+                                <h4>Lijek koji ste odabrali se već nalazi u vašoj košarici.  </h4>
+                                <a href="/Lijek/PrikaziLijekove" class="btn btn-success btnVrati" data-dismiss="modal" style="margin-top:-13%; margin-left: 90%">OK</a>
+                            </nobr>
                         </div>
 
 
@@ -117,3 +123,10 @@
 </body>
 </html>
 
+<script>
+    $(document).ready(function () {
+        $("#myModal").modal('show');
+    }
+    );
+   
+</script>

@@ -10,6 +10,7 @@ namespace WebApp_Apoteka.ViewModels
     {
         public List<Podaci> podaci { get; set; }
 
+        public string imePrezime { get; set; }
 
         public class Podaci
         {
@@ -29,16 +30,8 @@ namespace WebApp_Apoteka.ViewModels
 
             public string nazivApoteke { get; set; }
 
-            public List<PodaciNabavkeStavke> podaciNabavkeStavke { get; set; }
-            public class PodaciNabavkeStavke {
-                //public int NabavkaID { get; set; }
-                //public Nabavka Nabavka { get; set; }
-                public int LijekID { get; set; }
-                public string nazivLijeka { get; set; }
-                public double NabavnaCijenaLijeka { get; set; }
-                public int kolicina { get; set; }
-                public double ukupnaCijenaStavke { get; set; }
-            }
+            public DateTime datumPrimanja { get; set; }
+
         }
     }
 }

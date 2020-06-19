@@ -38,7 +38,7 @@
                 }
                 <td>@l.NazivLijeka</td>
                 <td>@l.Kolicina</td>
-                <td>@l.Cijena</td>
+                <td>@l.Cijena KM</td>
 
                 <td>@(l.Kolicina * l.Cijena) KM</td>
                 <td>
@@ -50,7 +50,11 @@
     </table>
     @if (KosaricaID)
     {
-        <a href="/Nabavka/ZapocniNabavku" style="margin-left: 62%" class="btn btn-success">Započni nabavku</a>
+        <nobr>
+            <a href="/Nabavka/ZapocniNabavku" style="margin-left: 62%" class="btn btn-success">Započni nabavku</a>
+
+            <a href="/Nabavka/PrikaziStanje" style="margin-left: -50%" class="btn btn-secondary">Nazad</a>
+        </nobr>
     }
 
 

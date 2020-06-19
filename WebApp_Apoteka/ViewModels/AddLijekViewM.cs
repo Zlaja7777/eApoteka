@@ -62,7 +62,7 @@ namespace WebApp_Apoteka.ViewModels
 
         public bool Postojeci { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Kolicina mora biti veća od 0!")]
+        
         public int Kolicina { get;  set; }
 
 

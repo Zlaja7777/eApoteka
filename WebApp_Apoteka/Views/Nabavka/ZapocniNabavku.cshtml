@@ -16,7 +16,7 @@
     <style>
 
         #form {
-            max-width: 30%;
+            max-width: 50%;
             background: #FAFAFA;
             padding: 10px;
             margin: 10px auto;
@@ -121,7 +121,7 @@
         <hr>
         <h5>Ukupna vrijednost nabavke</h5>
 
-
+        <input asp-for="@Model.nabavnaCijena" value="@Model.nabavnaCijena" hidden/>
 
         <input type="submit"  value ="Naruči" style="width: 100%"class="btn btn-success" />
     </form>

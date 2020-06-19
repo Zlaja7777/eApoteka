@@ -47,6 +47,7 @@
 </head>
 <body>
     <br /><br />
+
     <form asp-action="DodajKosaricu" id="form" method="post">
 
         <input asp-for="lijekID" value="@Model.lijekID" hidden />
@@ -70,16 +71,13 @@
 
 
 
-        <input type="submit" value="Dodaj u kosaricu" style="background-color:#2b731e; color: #FAFAFA;  margin-bottom: 20px;
-                width: 100%;
-                padding: 10px;
-                font-family: Calibri;
-                font-size: medium; " />
+        <input type="submit" value="Dodaj u kosaricu" class="btn btn-success" style="width: 100%" />
 
 
 
 
     </form>
+    <a href="/Nabavka/PrikaziStanje" class="btn btn-secondary" style="margin-left: 35%">Nazad</a>
 </body>
 </html>
 

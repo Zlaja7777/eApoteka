@@ -1,6 +1,7 @@
 ﻿
 @{
     Layout = "DefaultLayout";
+    bool postoji = (bool)ViewData["postoji"];
 }
 
 <!DOCTYPE html>
@@ -8,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Usluga</title>
+    <title>Nabavka</title>
     <style>
         .forma a{
             text-decoration: none;
@@ -39,14 +40,19 @@
     </style>
 </head>
 <body>
-    <h3>Podaci o lijekovima</h3>
+   
     <div class= "forma">
     
-        <a href="/Lijek/DodajLijek">Naruči novi lijek</a>
+        <a href="/Lijek/DodajLijek" class="btn btn-success">Naruči novi lijek</a>
         <br /> <br /> <br />
-        <a href="/Nabavka/PrikaziStanje">Pregledaj količinu aktivnih lijekova</a>
+        <a href="/Nabavka/PrikaziStanje" class="btn btn-success">Pregledaj količinu aktivnih lijekova</a>
         <br /> <br /> <br />
-       
+
+        @if (postoji)
+        {
+            <a href="/Nabavka/ListaNarucenihLijekova" class="btn btn-success">Pregled nabavki</a>
+        }
+
     </div>
 </body>
 </html>

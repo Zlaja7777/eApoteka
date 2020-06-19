@@ -31,9 +31,16 @@ namespace WebApp_Apoteka.Controllers
         {
             return View();
         }
-        public IActionResult OpcijeNarucivanja()
+        public async Task<IActionResult> OpcijeNarucivanja()
         {
+            bool postoji = false;
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            if (db.nabavka.Where(w => w.ApotekarID == user.Id).ToList().Count > 0)
+            {
+                postoji = true;
 
+            }
+            ViewData["postoji"] = postoji;
             return View();
         }
 
@@ -69,7 +76,7 @@ namespace WebApp_Apoteka.Controllers
                     KosaricaID = k.KosaricaID,
                     NazivLijeka = k.Lijek.NazivLijeka,
                     Kolicina = k.kolicina,
-                    Cijena = k.Lijek.ProdajnaCijena
+                    Cijena = k.Lijek.NabavnaCijena
 
                 }).ToList()
             };
@@ -143,7 +150,8 @@ namespace WebApp_Apoteka.Controllers
             AddNabavkaViewM ad = new AddNabavkaViewM
             {
                 datum = DateTime.Now,
-                nazivApoteke = "Europharm Sarajevo"
+                nazivApoteke = "Europharm Sarajevo",
+                
             };
             Korisnik k = db.korisnik.Where(s => user.KorisnikID == s.ID).Select(s => new Korisnik { Ime = s.Ime, Prezime = s.Prezime, Telefon = s.Telefon }).FirstOrDefault();
 
@@ -156,7 +164,8 @@ namespace WebApp_Apoteka.Controllers
                     KosaricaID = k.KosaricaID,
                     NazivLijeka = k.Lijek.NazivLijeka,
                     Kolicina = k.kolicina,
-                    Cijena = k.Lijek.ProdajnaCijena
+                    Cijena = k.Lijek.NabavnaCijena,
+                    
 
                 }).ToList()
             };
@@ -205,13 +214,13 @@ namespace WebApp_Apoteka.Controllers
                 {
                     sn.LijekID = l.LijekID;
                     sn.kolicina = l.kolicina;
-                    sn.ukupnaCijenaStavke = db.Lijek.Where(w => w.LijekID == l.LijekID).FirstOrDefault().ProdajnaCijena;
-                    sn.NabavnaCijenaLijeka = ad.nabavnaCijena;
+                    sn.ukupnaCijenaStavke = db.Lijek.Where(w => w.LijekID == l.LijekID).FirstOrDefault().NabavnaCijena * l.kolicina;
+                    sn.NabavnaCijenaLijeka = db.Lijek.Where(w => w.LijekID == l.LijekID).FirstOrDefault().NabavnaCijena;
                     db.stavkaNabavke.Add(sn);
                     db.SaveChanges();
                 }
             }
-
+           
             SqlConnection sql = new SqlConnection();
             sql.ConnectionString = db.GetConnectionString();
             sql.Open();
@@ -235,23 +244,59 @@ namespace WebApp_Apoteka.Controllers
             {
                 podaci = db.nabavka.Where(w => w.ApotekarID == user.Id).Select(s => new NabavkaViewM.Podaci
                 {
-                    ImePrezime = s.Apotekar.korisnik.Ime + " " + s.Apotekar.korisnik.Prezime,
-                    statusNarudzbe = false,
+                    
+                    statusNarudzbe = s.statusNarudzbe,
                     vrijednostNarudzbe = s.vrijednostNarudzbe,
                     datum = s.datum,
                     ID = s.ID,
-                    podaciNabavkeStavke = db.stavkaNabavke.Where(w=>w.NabavkaID == s.ID).Select(s => new NabavkaViewM.Podaci.PodaciNabavkeStavke
-                    {
-                        nazivLijeka = s.Lijek.NazivLijeka,
-                        kolicina = s.kolicina,
-                        ukupnaCijenaStavke = s.ukupnaCijenaStavke,
-                        NabavnaCijenaLijeka = s.NabavnaCijenaLijeka
+                    datumPrimanja = s.datumPrimanja,
 
-                    }).ToList()
+                   
                 }).ToList()
             };
+            n.podaci.Reverse();
+            Korisnik k = db.korisnik.Where(s => user.KorisnikID == s.ID).Select(s => new Korisnik { Ime = s.Ime, Prezime = s.Prezime }).FirstOrDefault();
+
+            n.imePrezime = k.Ime + "a " + k.Prezime+ "a";
 
             return View(n);
+        }
+        public IActionResult Dostavljeno(int id)
+        {
+            Nabavka n = db.nabavka.Where(w => w.ID == id).FirstOrDefault();
+            n.statusNarudzbe = true;
+            n.datumPrimanja = DateTime.Now;
+
+            List<StavkeNabavke> sn = db.stavkaNabavke.Where(w => w.NabavkaID == n.ID).ToList();
+
+            foreach (var item in sn)
+            {
+                Lijek l = db.Lijek.Where(w=>w.LijekID == item.LijekID).FirstOrDefault();
+                l.Kolicina += item.kolicina;
+                db.Update(l);
+                db.SaveChanges();
+            }
+            db.SaveChanges();
+
+            return Redirect("ListaNarucenihLijekova");
+        }
+        public IActionResult DetaljiNabavke(int nabavkaID)
+        {
+
+            List<DetaljiStavkiNabavke> nabavke = db.stavkaNabavke.Where(w => w.NabavkaID == nabavkaID).Select(s => new DetaljiStavkiNabavke
+            {
+                nazivLijeka = s.Lijek.NazivLijeka,
+                kolicina = s.kolicina,
+                ukupnaCijenStavke = s.ukupnaCijenaStavke,
+                nabavnaCIjena = s.NabavnaCijenaLijeka,
+                datumNabavke = s.Nabavka.datum,
+                datumPrimanja = s.Nabavka.datumPrimanja,
+                status = s.Nabavka.statusNarudzbe
+                , vrijednostNarudzbe = s.Nabavka.vrijednostNarudzbe
+            }).ToList();
+
+           
+            return PartialView(nabavke);
         }
     }
 }
