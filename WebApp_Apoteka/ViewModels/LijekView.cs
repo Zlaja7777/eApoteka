@@ -52,7 +52,7 @@ namespace WebApp_Apoteka.ViewModels
         public int Kolicina { get; set; }
 
 
-        [Range(1, int.MaxValue, ErrorMessage = "Unesite kolicinu!")]
+        [Range(1, 3, ErrorMessage = "Maksimalno možete naručiti samo 3.!")]
         public int OdabranaKolicina { get; set; }
 
         public int LijekID { get; set; }

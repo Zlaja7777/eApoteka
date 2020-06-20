@@ -14,7 +14,7 @@
     <title>PrikaziLijek</title>
     <style>
         #form {
-            max-width: 30%;
+            max-width: 40%;
             background: #FAFAFA;
             padding: 10px;
             margin: 10px auto;
@@ -25,13 +25,14 @@
 
         h5 {
             font-family: Calibri;
-            margin-top: -10px;
+            margin-top: -14px;
             color: #2b731e;
+            font-size: 15px;
         }
 
         h4 {
             font-family: Calibri;
-            margin-bottom: -5px;
+            margin-bottom: -14px;
             font-size: 20px;
         }
 
@@ -63,7 +64,7 @@
             <h5>Proizvođač</h5>
             <h4>@l.RokTrajanjaMjeseci</h4>
             <hr>
-            <h5>Rok trajanja (izražen u mjesecima, od dana kupovine)</h5>
+            <h5>Rok trajanja (izražen u mjesecima)</h5>
             <h4>@l.ProdajnaCijena KM</h4>
             <hr>
             <h5>Cijena</h5>
@@ -71,30 +72,27 @@
 
 
 
-
+            <br />
             <input asp-for="OdabranaKolicina" style=" margin-bottom: 10px; width: 50%;
                  padding: 10px;
                     font-family: Calibri; font-size: 20px" placeholder="Unesite kolicinu" />
         
-            @if (Model.OdabranaKolicina > Model.Kolicina)
-            {
-                <span style="color: red; font-family: Calibri">Trenutno stanje lijeka je @Model.Kolicina</span>
-            }
             <span asp-validation-for="OdabranaKolicina"style="color: red; font-family: Calibri"></span>
-            <h5>Unesite kolicinu</h5>
+            <h5 style="margin-top: -2%">Unesite količinu</h5>
             <br />
+            @if (Model.OdabranaKolicina > Model.Kolicina || Model.OdabranaKolicina > 3)
+            {
+                <span style="color: red; font-family: Calibri; margin-top: 20%">Trenutno stanje lijeka je @Model.Kolicina. Maksimalno mozete naručiti 3!</span>
+            }
 
            <input asp-for="Kolicina" hidden />
 
-            <input type="submit" value="Dodaj u kosaricu" style="background-color:#2b731e; color: #FAFAFA;  margin-bottom: 20px;
-                width: 100%;
-                padding: 10px;
-                font-family: Calibri;
-                font-size: medium; " />
+            <input type="submit" value="Dodaj u kosaricu" class="btn btn-success" style="width: 100%" />
 
 
         }
 
     </form>
+    <a href="/Lijek/PrikaziLijekove" class="btn btn-secondary" style="margin-left: 30%">Nazad</a>
 </body>
 </html>

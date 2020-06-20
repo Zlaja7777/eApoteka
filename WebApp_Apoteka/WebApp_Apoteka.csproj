@@ -29,9 +29,6 @@
     <Compile Remove="Controllers\RezervacijaTerminaController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Usluga\" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="Views\Usluga\EmptyHtmlFile.cshtml" />
     <Content Remove="Views\Lijek\Uredi.cshtml" />
     <Content Remove="Views\Usluga\PrikazUsluga.cshtml" />

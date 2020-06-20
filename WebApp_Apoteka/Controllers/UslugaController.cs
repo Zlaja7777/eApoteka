@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebApp_Apoteka.Entity_Framework;
 using WebApp_Apoteka.Models;
 using WebApp_Apoteka.ViewModels;
@@ -13,7 +14,7 @@ using WebApp_Apoteka.ViewModels;
 
 namespace WebApp_Apoteka.Controllers
 {
-    public class UslugaController: Controller
+    public class UslugaController : Controller
     {
         private MojDbContext db;
         private readonly UserManager<AppUser> userManager;
@@ -22,11 +23,11 @@ namespace WebApp_Apoteka.Controllers
             db = _db;
             this.userManager = userManager;
         }
-        
+
         public IActionResult DodajUsluga(int id)
         {
             AddUslugaViewM model = new AddUslugaViewM();
-            if(id != 0)
+            if (id != 0)
             {
                 Usluga u = db.usluga.Find(id);
                 model.ID = u.ID;
@@ -41,7 +42,7 @@ namespace WebApp_Apoteka.Controllers
         public IActionResult PohraniUslugu(AddUslugaViewM m)
         {
 
-            if (m.ID == 0)
+            if (m.ID == 0 && ModelState.IsValid && m.BrojPacijenata <= 20)
             {
                 Usluga u = new Usluga
                 {
@@ -53,8 +54,10 @@ namespace WebApp_Apoteka.Controllers
 
                 };
                 db.usluga.Add(u);
+                db.SaveChanges();
+                return Redirect("PrikaziUsluge");
             }
-            else
+            else if (m.ID != 0 && ModelState.IsValid && m.BrojPacijenata <= 20)
             {
                 Usluga u = db.usluga.Find(m.ID);
                 u.ID = m.ID;
@@ -63,14 +66,22 @@ namespace WebApp_Apoteka.Controllers
                 u.Naziv = m.Naziv;
                 u.DatumVrijeme = m.DatumVrijeme;
                 db.SaveChanges();
-                return View("UrediUslugu");
+                return Redirect("PrikaziUsluge");
             }
-            db.SaveChanges();
-           
-            return View();
+            else
+            {
+                return View("DodajUsluga", m);
+            }
+
+            
         }
-        public IActionResult PrikaziUsluge()
+       
+    
+        public async Task<IActionResult> PrikaziUsluge()
         {
+
+
+            var user = await userManager.GetUserAsync(HttpContext.User);
             UslugaView model = new UslugaView
             {
                 podaci = db.usluga.Select(m => new UslugaView.Podaci
@@ -80,45 +91,82 @@ namespace WebApp_Apoteka.Controllers
                     DatumVrijeme = m.DatumVrijeme,
                     Napomena = m.Napomena,
                     BrojPacijenata = m.BrojPacijenata,
+                    rezervisano = db.rezervacijaTermina.Where(w=>w.UslugaID == m.ID && user.Id == w.KorisnikID).Any()
+
                 }).ToList()
             };
+            
+            if (db.rezervacijaTermina.Where(w=>w.KorisnikID == user.Id).Count()>0)
+            {
+                model.postoji = true;
+            }
+            
+
 
             return View(model);
         }
-        public IActionResult UrediUslugu()
+        public async Task<IActionResult> MojiTermini()
         {
-            return View();
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            UslugaView model = new UslugaView
+            {
+                podaci = db.rezervacijaTermina.Where(w=>w.KorisnikID == user.Id).Select(m => new UslugaView.Podaci
+                {
+                    ID = m.usluga.ID,
+                    Naziv = m.usluga.Naziv,
+                    DatumVrijeme = m.usluga.DatumVrijeme,
+                    Napomena = m.usluga.Napomena,
+                    BrojPacijenata = m.usluga.BrojPacijenata,
+                    korisnikID = m.KorisnikID
+                }).ToList()
+            };
+            
+            if (model.podaci.Count == 0)
+            {
+                return Redirect("PrikaziUsluge");
+            }
+            return View(model);
         }
+       
         public IActionResult Uklanjanje(int id)
         {
-            Usluga usluga = db.usluga.Find(id);
-            TempData["keyUkloniUslugu"] = usluga.Naziv;
+            Usluga usluga = db.usluga.Find(id); 
             db.usluga.Remove(usluga);
             db.SaveChanges();
             
-            return View();
+            return Redirect("PrikaziUsluge");
 
         }
-        public IActionResult UslugaHome()
-        {
-            return View();
-        }
+       
         public async Task<IActionResult> RezervisiTermin(int uslugaID)
 
-        { 
-            //onemoguciti da broj rezervacija predje broj pacijenata!!
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            if (db.rezervacijaTermina.Where(w=>w.KorisnikID == user.Id && w.UslugaID == uslugaID).Any())
+            {
+                
+                return Redirect("PrikaziUsluge"); //pop up ili neka poruka tipa vec ste rezervisali ovaj termin
+            }
+            if (db.rezervacijaTermina.Where(w=>w.UslugaID == uslugaID).Count() == db.usluga.Where(w=>w.ID == uslugaID).FirstOrDefault().BrojPacijenata)
+            {
+                return Redirect("PrikaziUsluge"); //nema vise slobodnih mjesta ili umjesto buttona da pise popunjeno
+            }
             RezervacijaTermina rz = new RezervacijaTermina();
             rz.UslugaID = uslugaID;
 
-            var user = await userManager.GetUserAsync(HttpContext.User);
             rz.KorisnikID = user.Id;
        
             rz.DatumVrijemeRezervacije = DateTime.Now;
             db.rezervacijaTermina.Add(rz);
 
             db.SaveChanges();
-            return View();
+            return Redirect("PrikaziUsluge");
         }
+        //public async Task<IActionResult> DodajTermin()
+        //{
+        //    var user = await userManager.GetUserAsync(HttpContext.User);
+        //    return View("PrikaziUsluge", );
+        //}
         public IActionResult PrikazRezervisanihTermina()
         {
 
@@ -131,12 +179,15 @@ namespace WebApp_Apoteka.Controllers
                     DatumRezervacije = rz.DatumVrijemeRezervacije,
                     UslugaID = rz.usluga.ID,
                     KorisnikID = rz.KorisnikID,
-
                 }).ToList()
             };
+            if (rz.podaci.Count ==0)
+            {
+                return Redirect("PrikaziUsluge");
+            }
             return View(rz); 
         }
-        public async Task<IActionResult> ObrisiRezervaciju(int id)
+        public IActionResult ObrisiRezervaciju(int id, string korisnik)
         {
 
             SqlConnection sql = new SqlConnection();
@@ -144,15 +195,22 @@ namespace WebApp_Apoteka.Controllers
             sql.Open();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = sql;
-            var user = await userManager.GetUserAsync(HttpContext.User);
-            string userID = user.Id;
+            
 
 
-            cmd.CommandText = "delete from rezervacijaTermina where UslugaID=" + id + " and KorisnikID= '" + userID + "'";
+            cmd.CommandText = "delete from rezervacijaTermina where UslugaID=" + id + " and KorisnikID= '" + korisnik + "'";
 
             cmd.ExecuteNonQuery();
             db.SaveChanges();
-            return View();
+            if (User.IsInRole("Korisnik"))
+            {
+                return Redirect("MojiTermini");
+            }
+            else
+            {
+                return Redirect("PrikazRezervisanihTermina");
+            }
+            
         }
     }
 }
