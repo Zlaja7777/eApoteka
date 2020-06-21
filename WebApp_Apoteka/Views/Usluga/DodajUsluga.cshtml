@@ -43,7 +43,10 @@
                  <input asp-for="Naziv" placeholder="Naziv usluge" />
 
                  <span asp-validation-for="DatumVrijeme" class="text-danger"></span>
-                 <input type="datetime-local" asp-for="DatumVrijeme" />
+                 @*<input type="datetime" asp-for="DatumVrijeme" />*@
+                 <input type="datetime"
+                        asp-for="DatumVrijeme"
+                        value="@DateTime.Now.ToString()">
 
                  <h5 style="color:#2b731e; font-family: Calibri; font-size: medium; margin-top: -3%">
                      Datum i vrijeme izvršavanja usluge

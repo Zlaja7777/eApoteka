@@ -11,7 +11,7 @@ namespace WebApp_Apoteka.ViewModels
         [Required(ErrorMessage = "Naziv usluge nije unesen!")]
         public string Naziv { get; set; }
 
-        [Required][DataType(DataType.DateTime)]
+       
         public DateTime DatumVrijeme { get; set; }
 
         [Required(ErrorMessage = "Napomena nije unesena!")]
