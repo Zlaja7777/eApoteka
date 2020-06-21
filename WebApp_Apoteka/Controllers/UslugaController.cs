@@ -36,12 +36,38 @@ namespace WebApp_Apoteka.Controllers
                 model.Naziv = u.Naziv;
                 model.DatumVrijeme = u.DatumVrijeme;
             }
+           
             return View(model);
         }
-
+        private bool ProvjeriVrijemeUsluge(DateTime d)
+        {
+            foreach (var i in db.usluga.ToList())
+            {
+                if (i.DatumVrijeme.Hour == d.Hour && i.DatumVrijeme.Minute == d.Minute && d.Month == i.DatumVrijeme.Month && d.Day ==  i.DatumVrijeme.Day && i.DatumVrijeme.Year == d.Year)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public IActionResult PohraniUslugu(AddUslugaViewM m)
         {
-
+            if (ProvjeriVrijemeUsluge(m.DatumVrijeme) && (m.ID==0 || m.ID!=0) ) 
+            {
+                m.postoji = true;
+                return View("DodajUsluga", m);
+            }
+            else if (m.DatumVrijeme  <= DateTime.Now && (m.ID == 0 || m.ID != 0))
+            {
+                m.neispravanDatum = true;
+                return View("DodajUsluga", m);
+            }
+            //else if (ProvjeriVrijemeUsluge(m.DatumVrijeme) && m.ID != 0)
+            //{
+            //    m.postoji = true;
+            //    return View("DodajUsluga", m);
+            //}
+            
             if (m.ID == 0 && ModelState.IsValid && m.BrojPacijenata <= 20)
             {
                 Usluga u = new Usluga

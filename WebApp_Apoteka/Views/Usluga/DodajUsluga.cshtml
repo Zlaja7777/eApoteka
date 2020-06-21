@@ -43,6 +43,15 @@
                  <input asp-for="Naziv" placeholder="Naziv usluge" />
 
                  <span asp-validation-for="DatumVrijeme" class="text-danger"></span>
+                 if (Model.postoji)
+                 {
+                     <span class="text-danger">Termin koji ste odabrali je zauzet!</span>
+                 }
+                 else if (Model.neispravanDatum)
+                 {
+                     <span class="text-danger">Unesite validno datum i vrijeme!</span>
+
+                 }
                  @*<input type="datetime" asp-for="DatumVrijeme" />*@
                  <input type="datetime"
                         asp-for="DatumVrijeme"
@@ -69,8 +78,17 @@
                  <span asp-validation-for="Naziv" class="text-danger"></span>
 
                  <input asp-for="Naziv" value=@Model.Naziv />
+                 if (Model.postoji)
+                 {
+                     <span class="text-danger">Termin koji ste odabrali je zauzet!</span>
+                 }
+                 else if (Model.neispravanDatum)
+                 {
+                     <span class="text-danger">Unesite validno datum i vrijeme!</span>
 
-                 <span asp-validation-for="DatumVrijeme" class="text-danger"></span>
+                 }
+
+                 @*<span asp-validation-for="DatumVrijeme" class="text-danger"></span>*@
 
                  <input type="datetime" asp-for="DatumVrijeme" />
                  <h5 style="color:#2b731e; font-family: Calibri; font-size: medium;margin-top: -3%">

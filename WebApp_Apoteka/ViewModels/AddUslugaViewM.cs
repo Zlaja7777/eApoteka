@@ -19,5 +19,7 @@ namespace WebApp_Apoteka.ViewModels
 
         [Range(1, 20, ErrorMessage ="Maksimalan broj pacijenata je 20!")]
         public int BrojPacijenata { get; set; }
+        public bool postoji { get; internal set; }
+        public bool neispravanDatum { get; internal set; }
     }
 }
