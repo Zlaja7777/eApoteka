@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading.Tasks;
+using Apoteka.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -133,51 +134,78 @@ namespace WebApp_Apoteka.Controllers
         }
         public async Task<IActionResult> DodajNarudzbu(AddOnlineNarudzbaViewM md)
         {
-            List<Kosarica> podaci = db.kosarica.ToList();
-            var user = await userManager.GetUserAsync(HttpContext.User);
-
-            OnlineNarudzba n = new OnlineNarudzba();
-            n.ID = md.ID;
-            n.korisnikID = user.Id;
-            n.gradDostaveID = md.gradDostaveID;
-            n.adresaDostave = md.adresaDostave;
-            n.cijenaDostave = md.cijenaDostave;
-            n.vrijednostNarudzbe = md.vrijednostNarudzbe;
-            n.datumNarudzbe = DateTime.Now;
-            n.statusNarudzbe = false;
-           
-            db.onlineNarudzba.Add(n);
-            db.SaveChanges();
-
-
-            DetaljiOnlineNarudzbe dn = new DetaljiOnlineNarudzbe();
-            dn.onlineNarudzbaID = n.ID;
-            foreach (var l in podaci)
+            if (ModelState.IsValid)
             {
-                if (user.Id == l.KorisnikID)
+                List<Kosarica> podaci = db.kosarica.ToList();
+                var user = await userManager.GetUserAsync(HttpContext.User);
+
+                OnlineNarudzba n = new OnlineNarudzba();
+                n.ID = md.ID;
+                n.korisnikID = user.Id;
+                n.gradDostaveID = md.gradDostaveID;
+                n.adresaDostave = md.adresaDostave;
+                n.cijenaDostave = md.cijenaDostave;
+                n.vrijednostNarudzbe = md.vrijednostNarudzbe;
+                n.datumNarudzbe = DateTime.Now;
+                n.statusNarudzbe = false;
+
+                db.onlineNarudzba.Add(n);
+                db.SaveChanges();
+
+
+                DetaljiOnlineNarudzbe dn = new DetaljiOnlineNarudzbe();
+                dn.onlineNarudzbaID = n.ID;
+                foreach (var l in podaci)
                 {
-                    dn.lijekID = l.LijekID;
-                    dn.kolicina = l.kolicina;
-                    dn.cijenaLijeka = db.Lijek.Where(w => w.LijekID == l.LijekID).FirstOrDefault().ProdajnaCijena;
-                    dn.ukupnaCijenaStavke = dn.cijenaLijeka * dn.kolicina;
-                    db.detaljiOnlineNarudzbe.Add(dn);
-                    Lijek lijek = db.Lijek.Find(l.LijekID);
-                    lijek.Kolicina -= dn.kolicina;
-                    db.Update(lijek);
-                    db.SaveChanges();
+                    if (user.Id == l.KorisnikID)
+                    {
+                        dn.lijekID = l.LijekID;
+                        dn.kolicina = l.kolicina;
+                        dn.cijenaLijeka = db.Lijek.Where(w => w.LijekID == l.LijekID).FirstOrDefault().ProdajnaCijena;
+                        dn.ukupnaCijenaStavke = dn.cijenaLijeka * dn.kolicina;
+                        db.detaljiOnlineNarudzbe.Add(dn);
+                        Lijek lijek = db.Lijek.Find(l.LijekID);
+                        lijek.Kolicina -= dn.kolicina;
+                        db.Update(lijek);
+                        db.SaveChanges();
+                    }
                 }
+
+                SqlConnection sql = new SqlConnection();
+                sql.ConnectionString = db.GetConnectionString();
+                sql.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = sql;
+                cmd.CommandText = "delete from kosarica where KorisnikID= '" + user.Id + "'";
+
+                cmd.ExecuteNonQuery();
+                db.SaveChanges();
+                return Redirect("PrikaziNarudzbe");
             }
+            else
+            {
+                var user = await userManager.GetUserAsync(HttpContext.User);
+                md.opstine = db.Opstina.Select(k => new SelectListItem { Value = k.ID.ToString(), Text = k.Naziv }).ToList();
+                Korisnik k = db.korisnik.Where(s => user.KorisnikID == s.ID).Select(s => new Korisnik { Ime = s.Ime, Prezime = s.Prezime, Telefon = s.Telefon }).FirstOrDefault();
 
-            SqlConnection sql = new SqlConnection();
-            sql.ConnectionString = db.GetConnectionString();
-            sql.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = sql;
-            cmd.CommandText = "delete from kosarica where KorisnikID= '" + user.Id + "'";
 
-            cmd.ExecuteNonQuery();
-            db.SaveChanges();
-            return View();
+                KosaricaView kw = new KosaricaView
+                {
+                    podaci = db.kosarica.Where(s => s.KorisnikID == user.Id).Select(k => new KosaricaView.Podaci
+                    {
+
+                        KosaricaID = k.KosaricaID,
+                        NazivLijeka = k.Lijek.NazivLijeka,
+                        Kolicina = k.kolicina,
+                        Cijena = k.Lijek.ProdajnaCijena
+
+                    }).ToList()
+                }; 
+                ViewData["korisnik"] = k;
+                ViewData["podaci"] = kw;
+                return View("ZapocniNarudzbu", md);
+            }
+            
         }
         public async Task<IActionResult> PrikaziLijek(int id, int odabranaKolicina)
         {
@@ -218,21 +246,40 @@ namespace WebApp_Apoteka.Controllers
         public async Task<IActionResult> PrikaziNarudzbe()
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
-
-            List<NarudzbaViewM> nw = db.onlineNarudzba.Where(w => w.korisnikID == user.Id).Select(s => new NarudzbaViewM
+            if (User.IsInRole("Admin"))
             {
+                List<NarudzbaViewM> nw = db.onlineNarudzba.Select(s => new NarudzbaViewM
+                {
 
-                adresaDostave = s.adresaDostave,
-                narucioKorisnik = s.korisnik.korisnik.Ime + " " + s.korisnik.korisnik.Prezime,
-                vrijednostNarudzbe = s.vrijednostNarudzbe,
-                datumNarudzbe = s.datumNarudzbe,
-                statusNarudzbe = s.statusNarudzbe,
-                grad = s.gradDostave.Naziv,
-                adresa = s.adresaDostave,
-                ID = s.ID
-            }).ToList();
-            nw.Reverse();
-            return View(nw);
+                    adresaDostave = s.adresaDostave,
+                    narucioKorisnik = s.korisnik.korisnik.Ime + " " + s.korisnik.korisnik.Prezime,
+                    vrijednostNarudzbe = s.vrijednostNarudzbe,
+                    datumNarudzbe = s.datumNarudzbe,
+                    statusNarudzbe = s.statusNarudzbe,
+                    grad = s.gradDostave.Naziv,
+                    adresa = s.adresaDostave,
+                    ID = s.ID, datumSlanja = s.datumSlanja
+                }).ToList();
+                nw.Reverse();
+                return View(nw);
+            }
+            else { 
+                List<NarudzbaViewM> nw = db.onlineNarudzba.Where(w => w.korisnikID == user.Id).Select(s => new NarudzbaViewM
+                {
+
+                    adresaDostave = s.adresaDostave,
+                    narucioKorisnik = s.korisnik.korisnik.Ime + " " + s.korisnik.korisnik.Prezime,
+                    vrijednostNarudzbe = s.vrijednostNarudzbe,
+                    datumNarudzbe = s.datumNarudzbe,
+                    statusNarudzbe = s.statusNarudzbe,
+                    grad = s.gradDostave.Naziv,
+                    adresa = s.adresaDostave,
+                    ID = s.ID,
+                    datumSlanja = s.datumSlanja
+                }).ToList();
+                nw.Reverse();
+                return View(nw);
+            }
         }
         public IActionResult DetaljiNarudzbe(int narudzbaID)
         {
@@ -250,6 +297,15 @@ namespace WebApp_Apoteka.Controllers
 
 
             return PartialView(dn);
+        }
+        public IActionResult Posalji(int id)
+        {
+            OnlineNarudzba on = db.onlineNarudzba.Where(w => w.ID == id).FirstOrDefault();
+            on.statusNarudzbe = true;
+            on.datumSlanja = DateTime.Now;
+            db.Update(on);
+            db.SaveChanges();
+            return Redirect("PrikaziNarudzbe");
         }
     }
 }

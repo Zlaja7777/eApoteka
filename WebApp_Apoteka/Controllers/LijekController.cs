@@ -71,10 +71,8 @@ namespace WebApp_Apoteka.Controllers
             }
            
 
-            if (ModelState.IsValid && m.NabavnaCijena < m.ProdajnaCijena)
-            {
-                if (m.LijekID == 0)
-                {
+             if (m.LijekID == 0 && ModelState.IsValid && m.NabavnaCijena < m.ProdajnaCijena)
+              {
                     Lijek lijek = new Lijek
                     {
                         LijekID = m.LijekID,
@@ -97,8 +95,8 @@ namespace WebApp_Apoteka.Controllers
                     return RedirectToAction("PrikaziStanje", "Nabavka");
                 }
 
-                else if (m.LijekID != 0)
-                {
+             else if (m.LijekID != 0  && ModelState.IsValid && m.NabavnaCijena < m.ProdajnaCijena)
+            { 
                     Lijek l = db.Lijek.Find(m.LijekID);
 
                     l.NazivLijeka = m.NazivLijeka;
@@ -114,20 +112,30 @@ namespace WebApp_Apoteka.Controllers
                     l.ProdajnaCijena = m.ProdajnaCijena;
                     l.Kolicina = m.Kolicina;
                     db.SaveChanges();
-                    return View("PohranaUredjenogLijeka");
-                }
+                    return Redirect("PrikaziLijekove");
+             }
+            else if (m.LijekID == 0 && (!ModelState.IsValid || m.NabavnaCijena > m.ProdajnaCijena))
+            {
+                m.ListaKategorija = db.kategorija.Select(k => new SelectListItem { Value = k.KategorijaID.ToString(), Text = k.NazivKategorije }).ToList();
+                m.DatumProizvodnje = DateTime.Now;
 
-                db.SaveChanges();
+
+                return View("DodajLijek", m);
             }
             else
             {
                 m.ListaKategorija = db.kategorija.Select(k => new SelectListItem { Value = k.KategorijaID.ToString(), Text = k.NazivKategorije }).ToList();
                 m.DatumProizvodnje = DateTime.Now;
+
+                Lijek l = db.Lijek.Where(w => w.LijekID == m.LijekID).FirstOrDefault();
+                m.NabavnaCijena = l.NabavnaCijena;
+                m.RokTrajanjaMjeseci = l.RokTrajanjaMjeseci;
+                m.Kolicina = l.Kolicina;
                 return View("DodajLijek", m);
             }
            
+           
 
-            return View();
         }
         
        
@@ -152,7 +160,8 @@ namespace WebApp_Apoteka.Controllers
                     NabavnaCijena = m.NabavnaCijena,
                     ProdajnaCijena = m.ProdajnaCijena,
                     Kolicina = m.Kolicina
-                }).ToList(), postojeci = pronadjen1
+                }).ToList(),
+                postojeci = pronadjen1
                
             };
 
@@ -169,7 +178,7 @@ namespace WebApp_Apoteka.Controllers
             TempData["keyUkloni"] = lijek.NazivLijeka;
             db.Lijek.Remove(lijek);
             db.SaveChanges();
-            return View();
+            return Redirect("PrikaziLijekove");
 
         }
     }

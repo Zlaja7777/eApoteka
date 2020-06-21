@@ -77,7 +77,7 @@ namespace WebApp_Apoteka.Controllers
         }
        
     
-        public async Task<IActionResult> PrikaziUsluge()
+        public async Task<IActionResult> PrikaziUsluge(bool rezervisan, bool puno)
         {
 
 
@@ -91,7 +91,7 @@ namespace WebApp_Apoteka.Controllers
                     DatumVrijeme = m.DatumVrijeme,
                     Napomena = m.Napomena,
                     BrojPacijenata = m.BrojPacijenata,
-                    rezervisano = db.rezervacijaTermina.Where(w=>w.UslugaID == m.ID && user.Id == w.KorisnikID).Any()
+                    
 
                 }).ToList()
             };
@@ -100,8 +100,14 @@ namespace WebApp_Apoteka.Controllers
             {
                 model.postoji = true;
             }
-            
-
+            if (rezervisan)
+            {
+                model.Rezervisano = true;
+            }
+            if (puno)
+            {
+                model.BrojPacijenata = true;
+            }
 
             return View(model);
         }
@@ -142,15 +148,17 @@ namespace WebApp_Apoteka.Controllers
 
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
-            if (db.rezervacijaTermina.Where(w=>w.KorisnikID == user.Id && w.UslugaID == uslugaID).Any())
+            if (db.rezervacijaTermina.Where(w => w.KorisnikID == user.Id && w.UslugaID == uslugaID).Any())
             {
-                
-                return Redirect("PrikaziUsluge"); //pop up ili neka poruka tipa vec ste rezervisali ovaj termin
+                bool rezervisano = true;
+                return RedirectToAction("PrikaziUsluge", new { rezervisan = rezervisano }); //pop up ili neka poruka tipa vec ste rezervisali ovaj termin
             }
-            if (db.rezervacijaTermina.Where(w=>w.UslugaID == uslugaID).Count() == db.usluga.Where(w=>w.ID == uslugaID).FirstOrDefault().BrojPacijenata)
+            if (db.rezervacijaTermina.Where(w => w.UslugaID == uslugaID).Count() == db.usluga.Where(w => w.ID == uslugaID).FirstOrDefault().BrojPacijenata)
             {
-                return Redirect("PrikaziUsluge"); //nema vise slobodnih mjesta ili umjesto buttona da pise popunjeno
+                bool brojPacijenta = true;
+                return RedirectToAction("PrikaziUsluge", new { puno = brojPacijenta }); //nema vise slobodnih mjesta ili umjesto buttona da pise popunjeno
             }
+            
             RezervacijaTermina rz = new RezervacijaTermina();
             rz.UslugaID = uslugaID;
 

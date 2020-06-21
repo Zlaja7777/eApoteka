@@ -76,9 +76,16 @@
                 @*<li><a>Apoteka (a)</a></li>*@
                 <li><a href="/Usluga/PrikaziUsluge" class="nav-link text-dark">Usluge</a></li>
                 <li><a href="/Lijek/PrikaziLijekove" class="nav-link text-dark">Online apoteka</a></li>
-                <li><a href="/Nabavka/OpcijeNarucivanja" class="nav-link text-dark">Nabavka</a></li>
-                <li><a href="/Narudzba/PrikaziNarudzbe" class="nav-link text-dark">Narudzbe</a></li>
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin")) //trenutno je korisnik ujedno i apotekar. 
+                {
+                    <li><a href="/Nabavka/OpcijeNarucivanja" class="nav-link text-dark">Nabavka</a></li>
 
+                    <li><a href="/Narudzba/PrikaziNarudzbe" class="nav-link text-dark">Narudžbe</a></li>
+                }
+                else
+                {
+                    <li><a href="/Narudzba/PrikaziNarudzbe" class="nav-link text-dark">Moje narudžbe</a></li>
+                }
                 <li><a>O nama</a> </li>
 
             </ul>

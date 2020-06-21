@@ -22,15 +22,16 @@
             padding: 10px;
             border-radius: 2%;
         }
-        tr {
+        tr{
             text-align: center;
+            border: 1px solid;
         }
     </style>
 </head>
 <body>
     <br /><br />
     <div id="detalji">
-        <table class="table table-striped">
+        <table class="table table-striped" style="">
             <tr>
                 <th>Naručio</th>
                 <th>Grad i adresa</th>
@@ -47,13 +48,17 @@
                     <td>@i.grad, @i.adresa</td>
                     <td>@i.datumNarudzbe</td>
                     <td>@i.vrijednostNarudzbe KM</td>
-                    @if (i.statusNarudzbe)
+                    @if (i.statusNarudzbe && (User.IsInRole("Korisnik") || User.IsInRole("Admin")))
                     {
-                        <td>Poslano @i.datumSlanja</td>
+                        <td>Poslano @i.datumSlanja.ToShortDateString()</td>
                     }
-                    else
+                    else if (i.statusNarudzbe ==false && User.IsInRole("Korisnik"))
                     {
                         <td>Na obradi</td>
+                    }
+                    else if (i.statusNarudzbe ==false && User.IsInRole("Admin"))
+                    {
+                        <td><a href="/Narudzba/Posalji?id=@i.ID" class="btn btn-secondary">Pošalji</a></td>
                     }
 
                     <td><button type="button" class="btn btn-success btnDetalji" idValue="@i.ID">+</button></td>

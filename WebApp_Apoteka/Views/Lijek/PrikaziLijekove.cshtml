@@ -13,14 +13,14 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>PrikaziLijekove</title>
-    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">*@
-    @*<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>*@
+   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        th {
+        th, tr, td {
             text-align: center;
+            border: 1px solid;
         }
     </style>
 </head>
@@ -30,9 +30,7 @@
     <h3 class="text-success">Prikaz dostupnih lijekova</h3>
     <br />
 
-    <table class="table table-striped" 
-        style= "text-align: center;">
-
+    <table  class="table table-bordered" style="background-color: #2b731e; color: white;   ">
         <tr>
 
             <th>Naziv lijeka</th>
@@ -41,7 +39,7 @@
             <th> Kvalitativni i kvantitativni sastav</th>
 
             <th>Cijena (KM)</th>
-            <th>Rok trajanja (izrazen u mjesecima)</th>
+            
 
             @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
@@ -64,9 +62,9 @@
 
                 <td>@l.FarmaceutskiOblik</td>
                 <td>@l.KvalitativniIKvantitativniSastav</td>
-
+                
                 <td>@l.ProdajnaCijena KM</td>
-                <td>@l.RokTrajanjaMjeseci</td>
+                
 
                 @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                 {
@@ -87,7 +85,7 @@
 
         }
     </table>
-    @if (stanjeKosarice > 0)
+    @if (stanjeKosarice > 0 && User.IsInRole("Korisnik"))
     {
         <a href="/Narudzba/PregledKosarice" class="btn btn-success">Pregledaj kosaricu</a>
 
@@ -96,7 +94,7 @@
     {
         <div class="container">
 
-            <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal fade" id="myModal" role="dialog" style="margin-top: 15%">
                 <div class="modal-dialog">
 
                     <div class="modal-content">
@@ -104,7 +102,7 @@
                         <div class="modal-body">
                             <nobr>
                                 <h4>Lijek koji ste odabrali se već nalazi u vašoj košarici.  </h4>
-                                <a href="/Lijek/PrikaziLijekove" class="btn btn-success btnVrati" data-dismiss="modal" style="margin-top:-13%; margin-left: 90%">OK</a>
+                                <a href="/Lijek/PrikaziLijekove"  class="btn btn-success" data-ng-click="modal" style="margin-top:-13%; margin-left: 90%">OK</a>
                             </nobr>
                         </div>
 
@@ -126,7 +124,6 @@
 <script>
     $(document).ready(function () {
         $("#myModal").modal('show');
-        '@Url.Action("PrikaziLijekove", "Lijek")';
     }
     );
    

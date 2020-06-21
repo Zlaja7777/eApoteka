@@ -43,9 +43,20 @@ namespace WebApp_Apoteka.Controllers
             ViewData["postoji"] = postoji;
             return View();
         }
-
-        public async Task<IActionResult> PrikaziStanje()
+        private bool ProvjeriKosaricu(LijekKolicinaView lk, string user)
         {
+            foreach (var i in lk.podaci)
+            {
+                if (db.kosarica.Where(w=>w.LijekID == i.lijekID).Any())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public async Task<IActionResult> PrikaziStanje(bool pronadjen)
+        {
+
             var user = await userManager.GetUserAsync(HttpContext.User);
             LijekKolicinaView lk = new LijekKolicinaView
             {
@@ -57,8 +68,9 @@ namespace WebApp_Apoteka.Controllers
                     kolicina = s.Kolicina
                 }).ToList()
             };
-
+            lk.pronadjen = pronadjen;
             int stanjeKosarice = db.kosarica.Where(w => w.KorisnikID == user.Id).ToList().Count();
+           
             ViewData["stanjeKosarice"] = stanjeKosarice;
 
             return View(lk);
@@ -88,6 +100,7 @@ namespace WebApp_Apoteka.Controllers
         }
         public async Task<IActionResult> NabavnaKosarica(int lijekID, int kolicina)
         {
+
             var user = await userManager.GetUserAsync(HttpContext.User);
             Kosarica k = new Kosarica();
             k.LijekID = lijekID;
@@ -99,14 +112,30 @@ namespace WebApp_Apoteka.Controllers
 
             return PartialView("PrikaziStanje");
         }
-        public IActionResult PrikaziLijek(int lijekID)
+        
+        public async Task<IActionResult> PrikaziLijek(int lijekID)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            if (db.kosarica.Where(w=>w.LijekID == lijekID && w.KorisnikID == user.Id).Any())
+            {
+                LijekKolicinaView lk2 = db.Lijek.Where(w => w.LijekID == lijekID).Select(s => new LijekKolicinaView
+                {
+                    lijekID = s.LijekID,
+
+                    nabavnaCijenaLijeka = s.NabavnaCijena,
+                    nazivLijeka = s.NazivLijeka,
+                    kolicina = db.kosarica.Where(w => w.LijekID == lijekID && w.KorisnikID == user.Id).FirstOrDefault().kolicina
+
+                }).FirstOrDefault();
+
+                return PartialView("AjaxPrikazLijeka", lk2);
+            }
             LijekKolicinaView lk = db.Lijek.Where(w => w.LijekID == lijekID).Select(s => new LijekKolicinaView
             {
                 lijekID = s.LijekID,
 
                 nabavnaCijenaLijeka = s.NabavnaCijena,
-                nazivLijeka = s.NazivLijeka
+                nazivLijeka = s.NazivLijeka,
 
             }).FirstOrDefault();
 
@@ -117,18 +146,28 @@ namespace WebApp_Apoteka.Controllers
         public async Task<IActionResult> DodajKosaricu(LijekKolicinaView lw)
         {
 
+            var user = await userManager.GetUserAsync(HttpContext.User);
 
             if (ModelState.IsValid)
             {
                 Kosarica ad = new Kosarica();
-                var user = await userManager.GetUserAsync(HttpContext.User);
                 ad.KorisnikID = user.Id;
                 ad.LijekID = lw.lijekID;
-                ad.kolicina = lw.kolicina;
-                db.kosarica.Add(ad);
+                if (db.kosarica.Where(w => w.LijekID == lw.lijekID && w.KorisnikID == user.Id).Any() == false)
+                {
+                        ad.kolicina = lw.kolicina;
+                        db.kosarica.Add(ad);
+                }
+                else
+                {
+                    Kosarica k = db.kosarica.Find(db.kosarica.Where(w => w.LijekID == lw.lijekID && w.KorisnikID == user.Id).FirstOrDefault().KosaricaID);
+                    k.kolicina = lw.kolicina;
+                    db.Update(k);
+                }
                 db.SaveChanges();
                 return Redirect("PrikaziStanje");
             }
+           
             else
             {
                 LijekKolicinaView lw2 = db.Lijek.Where(w => w.LijekID == lw.lijekID).Select(s => new LijekKolicinaView
