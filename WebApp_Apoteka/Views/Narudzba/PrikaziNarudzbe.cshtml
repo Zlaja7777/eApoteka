@@ -29,6 +29,9 @@
     </style>
 </head>
 <body>
+    <a href="/Narudzba/ConvertToPdf">Otvori u pdf</a>
+    <a href="/Narudzba/Export">Skini excel</a>
+
     <br /><br />
     <div id="detalji">
         <table class="table table-striped" style="">
@@ -52,11 +55,11 @@
                     {
                         <td>Poslano @i.datumSlanja.ToShortDateString()</td>
                     }
-                    else if (i.statusNarudzbe ==false && User.IsInRole("Korisnik"))
+                    else if (i.statusNarudzbe == false && User.IsInRole("Korisnik"))
                     {
                         <td>Na obradi</td>
                     }
-                    else if (i.statusNarudzbe ==false && User.IsInRole("Admin"))
+                    else if (i.statusNarudzbe == false && User.IsInRole("Admin"))
                     {
                         <td><a href="/Narudzba/Posalji?id=@i.ID" class="btn btn-secondary">Pošalji</a></td>
                     }

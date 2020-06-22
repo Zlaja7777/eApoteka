@@ -30,7 +30,7 @@
     <h3 class="text-success">Prikaz dostupnih lijekova</h3>
     <br />
 
-    <table  class="table table-bordered" style="background-color: #2b731e; color: white;   ">
+    <table class="table table-bordered" style="background-color: #2b731e; color: white;   ">
         <tr>
 
             <th>Naziv lijeka</th>
@@ -39,13 +39,13 @@
             <th> Kvalitativni i kvantitativni sastav</th>
 
             <th>Cijena (KM)</th>
-            
+
 
             @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
             {
                 <th>Modifikacija podataka</th>
             }
-            else if(signInManager.IsSignedIn(User)&& User.IsInRole("Korisnik"))
+            else if (signInManager.IsSignedIn(User) && User.IsInRole("Korisnik"))
             {
                 <th>Pregled</th>
             }
@@ -56,31 +56,31 @@
         {
             if (l.Kolicina > 0)
             {
-            <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
+                <tr style="background-color: #FAFAFA; color:#2b731e; text-align: center">
 
-                <td>@l.NazivLijeka</td>
+                    <td>@l.NazivLijeka</td>
 
-                <td>@l.FarmaceutskiOblik</td>
-                <td>@l.KvalitativniIKvantitativniSastav</td>
-                
-                <td>@l.ProdajnaCijena KM</td>
-                
+                    <td>@l.FarmaceutskiOblik</td>
+                    <td>@l.KvalitativniIKvantitativniSastav</td>
 
-                @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                {
-                    <td>
-                        <a href="/Lijek/Uklanjanje?id=@l.LijekID" class="btn btn-danger">Brisi</a>
-                        <a href="/Lijek/DodajLijek?id=@l.LijekID" class="btn btn-info">Uredi</a>
+                    <td>@l.ProdajnaCijena KM</td>
 
-                    </td>
-                }
-                else if (signInManager.IsSignedIn(User) && User.IsInRole("Korisnik"))
-                {
-                    <td><a href="/Narudzba/PrikaziLijek?id=@l.LijekID" class="btn btn-success">+</a></td>
-                 }
+
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a href="/Lijek/Uklanjanje?id=@l.LijekID" class="btn btn-danger">Brisi</a>
+                            <a href="/Lijek/DodajLijek?id=@l.LijekID" class="btn btn-info">Uredi</a>
+
+                        </td>
+                    }
+                    else if (signInManager.IsSignedIn(User) && User.IsInRole("Korisnik"))
+                    {
+                        <td><a href="/Narudzba/PrikaziLijek?id=@l.LijekID" class="btn btn-success">+</a></td>
+                    }
 
                 </tr>
-                    }
+            }
 
 
         }
@@ -102,7 +102,7 @@
                         <div class="modal-body">
                             <nobr>
                                 <h4>Lijek koji ste odabrali se već nalazi u vašoj košarici.  </h4>
-                                <a href="/Lijek/PrikaziLijekove"  class="btn btn-success" data-ng-click="modal" style="margin-top:-13%; margin-left: 90%">OK</a>
+                                <a href="/Lijek/PrikaziLijekove" class="btn btn-success" data-ng-click="modal" style="margin-top:-13%; margin-left: 90%">OK</a>
                             </nobr>
                         </div>
 
@@ -116,8 +116,7 @@
 
 
     }
-
-
+ 
 </body>
 </html>
 

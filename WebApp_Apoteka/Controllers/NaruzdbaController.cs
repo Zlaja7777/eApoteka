@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Apoteka.Models;
@@ -10,6 +11,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime.Workdays;
+using Rotativa.AspNetCore;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 using WebApp_Apoteka.Entity_Framework;
 using WebApp_Apoteka.Models;
 using WebApp_Apoteka.ViewModels;
@@ -305,7 +311,47 @@ namespace WebApp_Apoteka.Controllers
             on.datumSlanja = DateTime.Now;
             db.Update(on);
             db.SaveChanges();
+            Sms();
             return Redirect("PrikaziNarudzbe");
         }
+
+        public void Sms()
+        {
+            TwilioClient.Init("ACde90fd5d90e0215276540e94632926dc", "c38fc21ad86f3c8e89bf15d2ad08f862");
+            var mess = MessageResource.Create
+                (
+                    to: new Twilio.Types.PhoneNumber("+38761079678"),
+                    from: new Twilio.Types.PhoneNumber("+13342036476"),
+                    body: "Vasa narudzba je poslana!"
+                );
+
+            
+        }
+
+        public  async Task<IActionResult> ConvertToPdf()
+        {
+            await Task.Yield();
+
+            return new ViewAsPdf("PrikaziNarudzbe2");
+        }
+        public async Task<IActionResult> Export()
+        {
+            await Task.Yield();
+            var stream = new MemoryStream();
+            List<OnlineNarudzba> onl = db.onlineNarudzba.ToList();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // da mi ne trazi licencu
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(onl, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelNAME = $"Pregled kolicinskog stanja.xlsx";
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelNAME);
+        }
+
+
     }
 }

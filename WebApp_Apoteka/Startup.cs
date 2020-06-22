@@ -19,6 +19,7 @@ using WebApp_Apoteka.Models;
 using WebApp_Apoteka.WebApoteka_Interfaces;
 using WebApp_Apoteka.WebApoteka_Services;
 
+
 namespace WebApp_Apoteka
 {
     public class Startup
@@ -51,7 +52,7 @@ namespace WebApp_Apoteka
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.AspNetCore.Hosting.IHostingEnvironment env2)
         {
             if (env.IsDevelopment())
             {
@@ -78,6 +79,7 @@ namespace WebApp_Apoteka
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            Rotativa.AspNetCore.RotativaConfiguration.Setup(env2);
         }
     }
 }
